@@ -41,9 +41,22 @@ function! s:BuildHierarchy(tags)
   " First, extract top-level tags
   for l:tag in a:tags
     let l:parent = s:GetParentName(l:tag)
-    if l:parent is v:null
+    if l:parent is# v:null
       call add(l:res, l:tag)
     endif
+  endfor
+  for l:tags_in_file in values(s:SeparateTagsByFilename(a:tags))
+    for l:tag in l:tags_in_file
+      let l:parent_name = s:GetParentName(l:tag)
+      if l:parent_name is# v:null
+        continue
+      endif
+      let l:parent = s:TagByName(l:parent_name, l:tags_in_file)
+      if l:parent is# v:null
+        continue
+      endif
+      call add(l:parent.children, l:tag)
+    endfor
   endfor
   return l:res
 endfunction
@@ -83,7 +96,7 @@ function! s:HasMarkers(dirpath)
 endfunction
 
 " Parse a tag file into a sequence of top-level tags
-function! guten_tag#ParseFile(file)
+function! s:ParseFile(file)
   try
     let l:lines = readfile(a:file)
   catch /E484/
@@ -137,6 +150,33 @@ function! s:ParseLine(line)
   let l:res.fields = l:fields
   call s:TagPostprocessing(l:res)
   return res
+endfunction
+
+" Return a dict where keys are filenames and values are lists of tags
+" appearing in the corresponding file
+function! s:SeparateTagsByFilename(tags)
+  let l:res = {}
+  for l:tag in a:tags
+    let l:file = l:tag.filename
+    if has_key(l:res, l:file)
+      call add(l:res[l:file], l:tag)
+    else
+      let l:res[l:file] = [l:tag]
+    endif
+  endfor
+  return l:res
+endfunction
+
+" Return the first tag with a given name from a list, or null if there's no
+" such tag
+function! s:TagByName(name, list)
+  for l:tag in a:list
+    if l:tag.name ==# a:name
+      return l:tag
+    endif
+  endfor
+  echomsg "No tag by name '" . a:name . "'"
+  return v:null
 endfunction
 
 " Do some actions after all fields and attributes of a tag were read
