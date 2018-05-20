@@ -99,10 +99,7 @@ function! guten_tag#ParseFile(file)
     endtry
     call add(l:all_tags, l:new_tag)
   endfor
-  let l:all_tags = uniq(sort(l:all_tags))
-  " Leave only top-level flags and place non-toplevel flags as children of
-  " other flags
-  return s:BuildHierarchy(l:all_tags)
+  return s:BuildHierarchy(uniq(sort(l:all_tags)))
 endfunction
 
 " Parse a tag file line into a dict.
@@ -116,12 +113,13 @@ function! s:ParseLine(line)
   let l:res.filename = l:extract_name_and_file[1]
   let l:res.children = []
   let l:rest = join(l:extract_name_and_file[2:], "\t")
-  " Remove the EX search command
+  " Extract EX search command
   let l:extract_fields = split(l:rest, '"')
   if len(l:extract_fields) <= 1
     res.fields = {}
     return res
   endif
+  let l:res.search_cmd = l:extract_fields[0]
   " Just in case the fields contain a '"', join them back
   let l:extract_fields = join(l:extract_fields[1:], '"')
   let l:fields = {}
@@ -137,5 +135,12 @@ function! s:ParseLine(line)
     let l:fields[l:key] = l:value
   endfor
   let l:res.fields = l:fields
+  call s:TagPostprocessing(l:res)
   return res
+endfunction
+
+" Do some actions after all fields and attributes of a tag were read
+function! s:TagPostprocessing(tag)
+  " Presently, do nothing. TODO: language-specific processing, like function
+  " signature extraction
 endfunction
