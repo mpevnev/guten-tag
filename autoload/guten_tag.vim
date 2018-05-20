@@ -5,9 +5,8 @@
 
 " --- Main functions --- "
 
-" This function searches up the directory tree until one of the file markers
-" is found, and then uses this directory as a place to keep and look for tags
-" file in.
+" Search up the directory tree until one of the file markers is found, and
+" then uses this directory as a place to keep and look for tags file in.
 function! guten_tag#SetTagsPath()
   " First check if we're in an directory or a file which is forbidden from
   " having local tags files.
@@ -36,7 +35,7 @@ endfunction
 
 " --- Helpers --- "
 
-" This function tests if a file matches any of the forbidden locations.
+" Test if a file matches any of the forbidden locations.
 function! s:ForbiddenLocations()
   let l:path = expand('%:p')
   for l:pattern in g:guten_tag_forbidden_paths
@@ -47,7 +46,7 @@ function! s:ForbiddenLocations()
   return 0
 endfunction
 
-" This function tests if there is a marker in a given directory.
+" Test if there is a marker in a given directory.
 function! s:HasMarkers(dirpath)
   for l:marker in g:guten_tag_markers
     if !empty(globpath(a:dirpath, l:marker, 0, 1))
@@ -57,8 +56,8 @@ function! s:HasMarkers(dirpath)
   return 0
 endfunction
 
-" This functon parses a tag file line into a dict.
-function! guten_tag#ParseLine(line)
+" Parse a tag file line into a dict.
+function! s:ParseLine(line)
   if a:line =~# '\v^!.*'
     throw 'Comment line'
   endif
@@ -70,6 +69,7 @@ function! guten_tag#ParseLine(line)
   " Remove the EX search command
   let l:extract_fields = split(l:rest, '"')
   if len(l:extract_fields) <= 1
+    res.fields = {}
     return res
   endif
   " Just in case the fields contain a '"', join them back
