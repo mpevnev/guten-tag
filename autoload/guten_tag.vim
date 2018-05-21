@@ -179,6 +179,19 @@ function! s:TagByName(name, list)
   return v:null
 endfunction
 
+" Compare two tags by name
+function! s:TagComparator(tag1, tag2)
+  let l:name1 = a:tag1.name
+  let l:name2 = a:tag2.name
+  if l:name1 ># l:name2
+    return 1
+  elseif l:name1 ==# l:name2
+    return 0
+  else
+    return -1
+  endif
+endfunction
+
 " Do some actions after all fields and attributes of a tag were read
 function! s:TagPostprocessing(tag)
   " Presently, do nothing. TODO: language-specific processing, like function
