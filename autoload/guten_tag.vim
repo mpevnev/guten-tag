@@ -30,6 +30,21 @@ function! guten_tag#CreateTagWindow()
   exec "file! " . l:window_name
 endfunction
 
+" Set a global option given by its name either to default if it's not set yet,
+" or to an augmented value otherwise. Pass v:null as augment_fn to leave the
+" option unchanged. The default is applied first, then augmentation is applied
+" (if it's requested, of course).
+function! guten_tag#Setopt(option, default, augment_fn)
+  let l:name = 'g:' . a:option
+  if !exists(l:name)
+    exec 'let ' . l:name . ' = a:default'
+  endif
+  if a:augment_fn isnot# v:null
+    exec 'let l:cur_value = ' . l:name
+    exec 'let ' . l:name . ' = a:augment_fn(l:cur_value)'
+  endif
+endfunction
+
 " Search up the directory tree until one of the file markers is found, and
 " then uses this directory as a place to keep and look for tags file in.
 function! guten_tag#SetTagsPath()
