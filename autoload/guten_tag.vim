@@ -12,22 +12,12 @@ function! guten_tag#CreateTagWindow()
     return
   endif
   let l:file = l:files[0]
-  let l:tags = s:ParseFile(l:file)
-  let l:content = s:TagWindowContent(l:tags)
-  let l:window_name = s:MakeWindowName(l:file)
-  if bufexists(l:window_name)
-    return
-  endif
-  if g:guten_tag_split_style ==# 'vertical'
-    let l:command = g:guten_tag_window_width . 'vnew "' . l:window_name . '"'
+  let l:buffer_name = s:MakeBufferName(l:file)
+  if bufexists(l:buffer_name)
+    call s:ReopenTagWindow(l:file, l:buffer_name)
   else
-    let l:command = g:guten_tag_window_height . 'new "' . l:window_name . '"'
+    call s:OpenNewWindow(l:file, l:buffer_name)
   endif
-  exec l:command
-  call append(0, l:content)
-  setlocal buftype=nofile
-  setlocal nomodifiable
-  exec "file! " . l:window_name
 endfunction
 
 " Set a global option given by its name either to default if it's not set yet,
@@ -183,8 +173,22 @@ function! s:IgnoreTag(tag)
 endfunction
 
 " Generate a name for tag exploration window
-function! s:MakeWindowName(tags_file)
-  return 'Guten Tag ' . fnamemodify(a:tags_file, ':p')
+function! s:MakeBufferName(tags_file)
+  return 'Guten-Tag-' . fnamemodify(a:tags_file, ':p')
+endfunction
+
+" Create a new window, then fill it with tags
+function! s:OpenNewWindow(tagfile, buffer_name)
+  if g:guten_tag_split_style ==# 'vertical'
+    let l:command = g:guten_tag_window_width . 'vnew "' . a:buffer_name . '"'
+  else
+    let l:command = g:guten_tag_window_height . 'new "' . a:buffer_name . '"'
+  endif
+  exec l:command
+  setlocal buftype=nofile
+  setlocal nomodifiable
+  exec 'file! ' . a:buffer_name
+  call s:RefreshWindow(winnr(), a:tagfile)
 endfunction
 
 " Parse a tag file into a sequence of top-level tags
@@ -244,6 +248,27 @@ function! s:ParseLine(line)
   let l:res.fields = l:fields
   call s:TagPostprocessing(l:res)
   return res
+endfunction
+
+" Regenerate the contents of a tag window
+function! s:RefreshWindow(window, tagfile)
+  let l:tags = s:ParseFile(a:tagfile)
+  let l:content = s:TagWindowContent(l:tags)
+  exec a:window . 'wincmd w'
+  setlocal modifiable
+  normal! ggdG
+  call append(0, l:content)
+  setlocal nomodifiable
+endfunction
+
+" Reopen a closed tags window
+function! s:ReopenTagWindow(tagfile, buffer_name)
+  let l:win = bufwinid(a:buffer_name)
+  if l:win < 0
+    call s:OpenNewWindow(a:tagfile, a:buffer_name)
+  else
+    call s:RefreshWindow(l:win, a:tagfile)
+  endif
 endfunction
 
 " Return a dict where keys are filenames and values are lists of tags
