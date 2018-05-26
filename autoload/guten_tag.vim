@@ -60,6 +60,22 @@ endfunction
 
 " --- Helpers --- "
 
+" Add a line describing a tag to a list of lines
+function! s:AddLine(add_to, tag, indent_level, print_parent)
+  let l:kind = s:GetKind(a:tag)
+  let l:new_line = l:kind ==# '' ? '' : l:kind . ' '
+  let l:new_line = l:new_line . a:tag.name
+  if a:print_parent
+    let l:parent = s:GetParentName(a:tag)
+    if l:parent isnot# v:null
+      let l:new_line = l:new_line . ' (owned by ' . (l:parent) . ')'
+    endif
+  endif
+  let l:new_line = repeat(' ', a:indent_level) . l:new_line
+  call add(a:add_to, l:new_line)
+  call add(a:add_to, "")
+endfunction
+
 " Transform a flat list of tags into a dictionary where keys are file names
 " and values are lists of tags appearing in this file.
 function! s:BuildHierarchy(tags)
@@ -80,6 +96,9 @@ function! s:BuildHierarchy(tags)
       endif
       let l:parent = s:TagByName(l:parent_name, l:tags_in_file)
       if l:parent is# v:null
+        " If it's not possible to determine tag's parent, treat it as a top
+        " level tag.
+        call add(l:res, l:tag)
         continue
       endif
       call add(l:parent.children, l:tag)
@@ -111,6 +130,20 @@ function! s:GetParentName(tag)
   endfor
   return v:null
 endfunction  
+
+" Get the first letter of 'kind' attribute
+function! s:GetKind(tag)
+  if has_key(a:tag.fields, 'kind')
+    let l:kind = a:tag.fields.kind
+  else
+    return ""
+  endif
+  if l:kind ==# ""
+    return ""
+  else
+    return strcharpart(l:kind, 0, 1)
+  endif
+endfunction
 
 " Test if there is a marker in a given directory.
 function! s:HasMarkers(dirpath)
@@ -243,8 +276,7 @@ function! s:TagWindowContent(tags_hierarchy)
     call add(l:res, "")
     for l:toplevel in a:tags_hierarchy[l:file]
       let l:indent = g:guten_tag_indent
-      call add(l:res, repeat(' ', l:indent) . l:toplevel.name)
-      call add(l:res, "")
+      call s:AddLine(l:res, l:toplevel, l:indent, 1)
       let l:traversal = [[l:toplevel, 0]] " tag, current child index
       let l:indent += g:guten_tag_indent
       while len(l:traversal) ># 0
@@ -255,9 +287,7 @@ function! s:TagWindowContent(tags_hierarchy)
           continue
         endif
         let l:cur = l:parent.children[l:child_index]
-        let l:line = repeat(' ', l:indent) . l:cur.name
-        call add(l:res, l:line)
-        call add(l:res, '')
+        call s:AddLine(l:res, l:cur, l:indent, 0)
         if len(l:cur.children) > 0
           call add(l:traversal, [l:cur, 0])
           let l:indent += g:guten_tag_indent
