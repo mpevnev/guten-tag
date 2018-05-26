@@ -9,21 +9,20 @@ endif
 let g:loaded_guten_tag = 1
 
 " Initialize the defaults - tag management
-call guten_tag#Setopt('guten_tag_forbidden_paths',
-      \ ['\v^/usr/.*', '\v^/etc/.*', '\v/var/.*'], v:null)
-call guten_tag#Setopt('guten_tag_markers',
-      \ ['.git', 'src', 'source'], v:null)
-call guten_tag#Setopt('guten_tag_tags_files',
-      \ ['tags', 'TAGS'], v:null)
-call guten_tag#Setopt('guten_tag_tags_when_forbidden',
-      \ &tags, v:null)
+call guten_tag#DefOpt('guten_tag_forbidden_paths',
+      \ ['\v^/usr/.*', '\v^/etc/.*', '\v/var/.*'])
+call guten_tag#DefOpt('guten_tag_markers',
+      \ ['.git', 'src', 'source'])
+call guten_tag#DefOpt('guten_tag_tags_files',
+      \ ['tags', 'TAGS'])
+call guten_tag#DefOpt('guten_tag_tags_when_forbidden', &tags)
 
 " Initialize the defaults - tags exploration
-call guten_tag#Setopt('guten_tag_dense', 0, v:null)
-call guten_tag#Setopt('guten_tag_indent', 2, v:null)
-call guten_tag#Setopt('guten_tag_split_style', 'vertical', v:null)
-call guten_tag#Setopt('guten_tag_window_height', 30, v:null)
-call guten_tag#Setopt('guten_tag_window_width', 35, v:null)
+call guten_tag#DefOpt('guten_tag_dense', 0)
+call guten_tag#DefOpt('guten_tag_indent', 2)
+call guten_tag#DefOpt('guten_tag_split_style', 'vertical')
+call guten_tag#DefOpt('guten_tag_window_height', 30)
+call guten_tag#DefOpt('guten_tag_window_width', 35)
 
 augroup PluginGutenTag
   autocmd!

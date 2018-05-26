@@ -20,20 +20,6 @@ function! guten_tag#CreateTagWindow()
   endif
 endfunction
 
-" Set a global option given by its name either to default if it's not set yet,
-" or to an augmented value otherwise. Pass v:null as augment_fn to leave the
-" option unchanged. The default is applied first, then augmentation is applied
-" (if it's requested, of course).
-function! guten_tag#Setopt(option, default, augment_fn)
-  let l:name = 'g:' . a:option
-  if !exists(l:name)
-    exec 'let ' . l:name . ' = a:default'
-  endif
-  if a:augment_fn isnot# v:null
-    exec 'let l:cur_value = ' . l:name
-    exec 'let ' . l:name . ' = a:augment_fn(l:cur_value)'
-  endif
-endfunction
 
 " Search up the directory tree until one of the file markers is found, and
 " then uses this directory as a place to keep and look for tags file in.
@@ -63,6 +49,28 @@ function! guten_tag#SetTagsPath()
   let &l:tags = join(l:toplevel_tags, ',')
 endfunction
 
+
+" --- Option management --- "
+
+" Set a default for an option.
+function! guten_tag#DefOpt(option, default)
+  let l:name = 'g:' . a:option
+  if !exists(l:name)
+    exec 'let ' . l:name . ' = a:default'
+  endif
+endfunction
+
+" Modify an option by passing its value to a modification function and setting
+" it to the function's return value.
+function! guten_tag#ModOpt(option, modification)
+  let l:name = 'g:' . a:option
+  if !exists(l:name)
+    return
+  endif
+  exec 'let l:cur_value = ' . l:name
+  exec 'let ' . l:name . ' = a:modification(l:cur_value)'
+endfunction
+
 " --- Helpers --- "
 
 " Add a line describing a tag to a list of lines
@@ -80,6 +88,7 @@ function! s:AddLine(add_to, tag, indent_level, print_parent)
   call add(a:add_to, l:new_line)
   if !g:guten_tag_dense
     call add(a:add_to, "")
+    echomsg "!"
   endif
 endfunction
 
