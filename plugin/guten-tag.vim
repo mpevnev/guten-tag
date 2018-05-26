@@ -40,3 +40,7 @@ augroup PluginGutenTag
   autocmd!
   autocmd BufRead,BufNewFile * call guten_tag#SetTagsPath()
 augroup END
+
+" Commands
+
+command GTOpenTagWindow call guten_tag#CreateTagWindow()
