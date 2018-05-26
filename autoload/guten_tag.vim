@@ -5,6 +5,13 @@
 
 " --- Main functions --- "
 
+" Create a new window and populate it with tag tree
+function! guten_tag#PopulateTagWindow()
+  let l:tags = s:ParseFile("tags")
+  let l:content = s:TagWindowContent(l:tags)
+  call append(0, l:content)
+endfunction
+
 " Search up the directory tree until one of the file markers is found, and
 " then uses this directory as a place to keep and look for tags file in.
 function! guten_tag#SetTagsPath()
@@ -45,6 +52,7 @@ function! s:BuildHierarchy(tags)
       call add(l:res, l:tag)
     endif
   endfor
+  " Now, attach non-top-level tags to them
   for l:tags_in_file in values(s:SeparateTagsByFilename(a:tags))
     for l:tag in l:tags_in_file
       let l:parent_name = s:GetParentName(l:tag)
@@ -175,7 +183,6 @@ function! s:TagByName(name, list)
       return l:tag
     endif
   endfor
-  echomsg "No tag by name '" . a:name . "'"
   return v:null
 endfunction
 
@@ -190,6 +197,37 @@ function! s:TagComparator(tag1, tag2)
   else
     return -1
   endif
+endfunction
+
+" Return a list of lines in the tag overview window
+function! s:TagWindowContent(tags_hierarchy)
+  let l:res = []
+  for l:toplevel in a:tags_hierarchy
+    call add(l:res, l:toplevel.name)
+    call add(l:res, "")
+    let l:traversal = [[l:toplevel, 0]] " tag, current child index
+    let l:indent = g:guten_tag_indent
+    while len(l:traversal) ># 0
+      let [l:parent, l:child_index] = l:traversal[-1]
+      if l:child_index ==# len(l:parent.children)
+        unlet l:traversal[-1]
+        let l:indent -= g:guten_tag_indent
+        continue
+      endif
+      let l:cur = l:parent.children[l:child_index]
+      let l:line = repeat(' ', l:indent) . l:cur.name
+      call add(l:res, l:line)
+      call add(l:res, '')
+      if len(l:cur.children) > 0
+        call add(l:traversal, [l:cur, 0])
+        let l:indent += g:guten_tag_indent
+        echomsg l:indent
+        continue
+      endif
+      let l:traversal[-1][1] += 1
+    endwhile
+  endfor
+  return l:res
 endfunction
 
 " Do some actions after all fields and attributes of a tag were read
