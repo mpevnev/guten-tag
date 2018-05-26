@@ -24,8 +24,10 @@ function! guten_tag#CreateTagWindow()
     let l:command = g:guten_tag_window_height . 'new "' . l:window_name . '"'
   endif
   exec l:command
-  setlocal buftype=nofile
   call append(0, l:content)
+  setlocal buftype=nofile
+  setlocal nomodifiable
+  exec "file! " . l:window_name
 endfunction
 
 " Search up the directory tree until one of the file markers is found, and
@@ -132,8 +134,7 @@ endfunction
 
 " Generate a name for tag exploration window
 function! s:MakeWindowName(tags_file)
-  let l:tags_file = expand(a:tags_file . ':p')
-  return 'Guten Tag ' . l:tags_file
+  return 'Guten Tag ' . fnamemodify(a:tags_file, ':p')
 endfunction
 
 " Parse a tag file into a sequence of top-level tags
@@ -238,7 +239,7 @@ endfunction
 function! s:TagWindowContent(tags_hierarchy)
   let l:res = []
   for l:file in keys(a:tags_hierarchy)
-    call add(l:res, expand(l:file . ':p'))
+    call add(l:res, fnamemodify(l:file, ':p'))
     call add(l:res, "")
     for l:toplevel in a:tags_hierarchy[l:file]
       let l:indent = g:guten_tag_indent
