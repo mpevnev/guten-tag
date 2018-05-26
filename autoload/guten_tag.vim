@@ -88,7 +88,6 @@ function! s:AddLine(add_to, tag, indent_level, print_parent)
   call add(a:add_to, l:new_line)
   if !g:guten_tag_dense
     call add(a:add_to, "")
-    echomsg "!"
   endif
 endfunction
 
@@ -342,7 +341,6 @@ function! s:TagWindowContent(tags_hierarchy)
         if len(l:cur.children) > 0
           call add(l:traversal, [l:cur, 0])
           let l:indent += g:guten_tag_indent
-          echomsg l:indent
           continue
         endif
         let l:traversal[-1][1] += 1
