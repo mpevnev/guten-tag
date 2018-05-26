@@ -27,13 +27,13 @@ if !exists('g:guten_tag_indent')
   let g:guten_tag_indent = 2
 endif
 if !exists('g:guten_tag_split_style')
-  let g:gute_tag_split_style = 'vertical'
+  let g:guten_tag_split_style = 'vertical'
 endif
 if !exists('g:guten_tag_window_height')
-  let g:guten_tag_window_height = 20
+  let g:guten_tag_window_height = 30
 endif
 if !exists('g:gute_tag_window_width')
-  let g:guten_tag_window_width = 25
+  let g:guten_tag_window_width = 35
 endif
 
 augroup PluginGutenTag

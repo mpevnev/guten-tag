@@ -6,9 +6,25 @@
 " --- Main functions --- "
 
 " Create a new window and populate it with tag tree
-function! guten_tag#PopulateTagWindow()
-  let l:tags = s:ParseFile("tags")
+function! guten_tag#CreateTagWindow()
+  let l:files = tagfiles()
+  if len(l:files) == 0
+    return
+  endif
+  let l:file = l:files[0]
+  let l:tags = s:ParseFile(l:file)
   let l:content = s:TagWindowContent(l:tags)
+  let l:window_name = s:MakeWindowName(l:file)
+  if bufexists(l:window_name)
+    return
+  endif
+  if g:guten_tag_split_style ==# 'vertical'
+    let l:command = g:guten_tag_window_width . 'vnew "' . l:window_name . '"'
+  else
+    let l:command = g:guten_tag_window_height . 'new "' . l:window_name . '"'
+  endif
+  exec l:command
+  setlocal buftype=nofile
   call append(0, l:content)
 endfunction
 
@@ -103,6 +119,22 @@ function! s:HasMarkers(dirpath)
   return 0
 endfunction
 
+" Test if a tag should not appear in the hierarchy of tags
+function! s:IgnoreTag(tag)
+  let l:ignore_kinds = ['i', 'import', 'include', 'namespace']
+  if !has_key(a:tag.fields, 'kind') || index(l:ignore_kinds, a:tag.fields.kind) ==# -1
+    return 0
+  else
+    return 1
+  endif
+endfunction
+
+" Generate a name for tag exploration window
+function! s:MakeWindowName(tags_file)
+  let l:tags_file = expand(a:tags_file . ':p')
+  return 'Guten Tag ' . l:tags_file
+endfunction
+
 " Parse a tag file into a sequence of top-level tags
 function! s:ParseFile(file)
   try
@@ -118,7 +150,9 @@ function! s:ParseFile(file)
     catch /Comment line/
       continue
     endtry
-    call add(l:all_tags, l:new_tag)
+    if !s:IgnoreTag(l:new_tag)
+      call add(l:all_tags, l:new_tag)
+    endif
   endfor
   return s:BuildHierarchy(uniq(sort(l:all_tags)))
 endfunction
