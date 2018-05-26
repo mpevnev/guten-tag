@@ -73,7 +73,9 @@ function! s:AddLine(add_to, tag, indent_level, print_parent)
   endif
   let l:new_line = repeat(' ', a:indent_level) . l:new_line
   call add(a:add_to, l:new_line)
-  call add(a:add_to, "")
+  if !g:guten_tag_dense
+    call add(a:add_to, "")
+  endif
 endfunction
 
 " Transform a flat list of tags into a dictionary where keys are file names

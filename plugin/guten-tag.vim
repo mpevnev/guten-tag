@@ -23,6 +23,9 @@ if !exists('g:guten_tag_tags_when_forbidden')
 endif
 
 " Initialize the defaults - tags exploration
+if !exists('g:guten_tag_dense')
+  let g:guten_tag_dense = 0
+endif
 if !exists('g:guten_tag_indent')
   let g:guten_tag_indent = 2
 endif
