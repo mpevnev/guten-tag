@@ -3,7 +3,7 @@
 " License: Vim's license
 
 " Set a default for an option.
-function! guten_tag#DefOpt(option, default)
+function! guten_tag#option#DefOpt(option, default)
   let l:name = 'g:' . a:option
   if !exists(l:name)
     exec 'let ' . l:name . ' = a:default'
@@ -12,7 +12,7 @@ endfunction
 
 " Modify an option by passing its value to a modification function and setting
 " it to the function's return value.
-function! guten_tag#ModOpt(option, modification)
+function! guten_tag#option#ModOpt(option, modification)
   let l:name = 'g:' . a:option
   if !exists(l:name)
     return
