@@ -42,5 +42,4 @@ augroup PluginGutenTag
 augroup END
 
 " Commands
-
-command GTOpenTagWindow call guten_tag#CreateTagWindow()
+command! GutenTagOpenTagWindow call guten_tag#CreateTagWindow()
