@@ -58,7 +58,8 @@ endfunction
 
 " --- Helpers --- "
 
-" Transform a flat list of tags into a list of top-level tags with children
+" Transform a flat list of tags into a dictionary where keys are file names
+" and values are lists of tags appearing in this file.
 function! s:BuildHierarchy(tags)
   let l:res = []
   " First, extract top-level tags
@@ -82,7 +83,7 @@ function! s:BuildHierarchy(tags)
       call add(l:parent.children, l:tag)
     endfor
   endfor
-  return l:res
+  return s:SeparateTagsByFilename(l:res)
 endfunction
 
 " Test if a file matches any of the forbidden locations.
@@ -236,30 +237,35 @@ endfunction
 " Return a list of lines in the tag overview window
 function! s:TagWindowContent(tags_hierarchy)
   let l:res = []
-  for l:toplevel in a:tags_hierarchy
-    call add(l:res, l:toplevel.name)
+  for l:file in keys(a:tags_hierarchy)
+    call add(l:res, expand(l:file . ':p'))
     call add(l:res, "")
-    let l:traversal = [[l:toplevel, 0]] " tag, current child index
-    let l:indent = g:guten_tag_indent
-    while len(l:traversal) ># 0
-      let [l:parent, l:child_index] = l:traversal[-1]
-      if l:child_index ==# len(l:parent.children)
-        unlet l:traversal[-1]
-        let l:indent -= g:guten_tag_indent
-        continue
-      endif
-      let l:cur = l:parent.children[l:child_index]
-      let l:line = repeat(' ', l:indent) . l:cur.name
-      call add(l:res, l:line)
-      call add(l:res, '')
-      if len(l:cur.children) > 0
-        call add(l:traversal, [l:cur, 0])
-        let l:indent += g:guten_tag_indent
-        echomsg l:indent
-        continue
-      endif
-      let l:traversal[-1][1] += 1
-    endwhile
+    for l:toplevel in a:tags_hierarchy[l:file]
+      let l:indent = g:guten_tag_indent
+      call add(l:res, repeat(' ', l:indent) . l:toplevel.name)
+      call add(l:res, "")
+      let l:traversal = [[l:toplevel, 0]] " tag, current child index
+      let l:indent += g:guten_tag_indent
+      while len(l:traversal) ># 0
+        let [l:parent, l:child_index] = l:traversal[-1]
+        if l:child_index ==# len(l:parent.children)
+          unlet l:traversal[-1]
+          let l:indent -= g:guten_tag_indent
+          continue
+        endif
+        let l:cur = l:parent.children[l:child_index]
+        let l:line = repeat(' ', l:indent) . l:cur.name
+        call add(l:res, l:line)
+        call add(l:res, '')
+        if len(l:cur.children) > 0
+          call add(l:traversal, [l:cur, 0])
+          let l:indent += g:guten_tag_indent
+          echomsg l:indent
+          continue
+        endif
+        let l:traversal[-1][1] += 1
+      endwhile
+    endfor
   endfor
   return l:res
 endfunction
