@@ -9,6 +9,7 @@ function! guten_tag#buffer#Buffer(tags_file, hierarchy)
   let l:res = {}
   let l:res.name = s:MakeBufferName(a:tags_file)
   let l:res.tags_file = a:tags_file
+  let l:res.dense = g:guten_tag_dense
   let l:res.files = []
   for l:filename in keys(a:hierarchy)
     let l:file = guten_tag#buffer#File(l:filename, a:hierarchy[l:filename])
@@ -30,20 +31,20 @@ endfunction
 function! guten_tag#buffer#BufferToText(buffer)
   let l:res = []
   for l:file in a:buffer.files
-    let l:res += guten_tag#buffer#FileToText(l:file)
+    let l:res += guten_tag#buffer#FileToText(a:buffer, l:file)
   endfor
   return l:res
 endfunction
 
 " Convert a file object to its textual representation (a list of lines)
-function! guten_tag#buffer#FileToText(file)
+function! guten_tag#buffer#FileToText(buffer, file)
   let l:res = [fnamemodify(a:file.name, ':p')]
   if len(a:file.tags) ==# 0
     return l:res
   endif
   for l:toplevel in a:file.tags
     let l:indent = g:guten_tag_indent
-    call s:AddLine(l:res, l:toplevel, l:indent, 1)
+    call s:AddLine(a:buffer, l:res, l:toplevel, l:indent, 1)
     let l:traversal = [[l:toplevel, 0]] " tag, current child index
     let l:indent += g:guten_tag_indent
     while len(l:traversal) ># 0
@@ -54,7 +55,7 @@ function! guten_tag#buffer#FileToText(file)
         continue
       endif
       let l:cur = l:parent.children[l:child_index]
-      call s:AddLine(l:res, l:cur, l:indent, 0)
+      call s:AddLine(a:buffer, l:res, l:cur, l:indent, 0)
       if len(l:cur.children) ># 0
         call add(l:traversal, [l:cur, 0])
         continue
@@ -78,7 +79,7 @@ function! guten_tag#buffer#TagAtLine(buffer, line)
     let l:tags = s:AllTags(l:file)
     let l:numtags = len(l:tags)
     let l:index_after_header = a:line - (l:filestart + 1)
-    if g:guten_tag_dense
+    if a:buffer.dense
       if l:index_after_header <# l:numtags
         return l:tags[l:index_after_header]
       endif
@@ -101,9 +102,9 @@ endfunction
 
 " Add a line for a given tag, maybe followed by an empty line if 'dense' is
 " not set
-function! s:AddLine(add_to, tag, indent_level, print_parent)
+function! s:AddLine(buffer, add_to, tag, indent_level, print_parent)
   call add(a:add_to, s:MakeLine(a:tag, a:indent_level, a:print_parent))
-  if !g:guten_tag_dense
+  if !a:buffer.dense
     call add(a:add_to, "")
   endif
 endfunction

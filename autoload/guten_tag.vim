@@ -97,16 +97,20 @@ endfunction
 
 " Create and open a new window for a buffer
 function! s:OpenNewWindow(buffer)
+  let l:old_nr = winnr()
   if g:guten_tag_split_style ==# 'vertical'
     let l:command = g:guten_tag_window_width . 'vnew "' . a:buffer.name . '"'
   else
     let l:command = g:guten_tag_window_height . 'new "' . a:buffer.name . '"'
   endif
   exec l:command
+  let l:tagwin_nr = winnr()
   setlocal buftype=nofile
   setlocal nomodifiable
   exec 'file! ' . a:buffer.name
-  call s:RefreshWindow(winnr(), a:buffer)
+  call s:RefreshWindow(l:tagwin_nr, a:buffer)
+  call s:SetMappings(l:tagwin_nr)
+  exec l:old_nr . 'wincmd w'
 endfunction
 
 " Reopen a closed window with a given buffer
@@ -119,12 +123,26 @@ function! s:ReopenTagWindow(buffer)
   endif
 endfunction
 
-" Reset window's contents
+" Reset window's contents and update its buffer property to a new buffer.
 function! s:RefreshWindow(window, buffer)
+  let l:old_nr = winnr()
+  let a:buffer.dense = g:guten_tag_dense
   let l:content = guten_tag#buffer#BufferToText(a:buffer)
   exec a:window . 'wincmd w'
+  let w:buffer = a:buffer
   setlocal modifiable
   normal! ggdG
   call append(0, l:content)
   setlocal nomodifiable
+  exec l:old_nr . 'wincmd w'
+endfunction
+
+" --- Tag window mappings --- "
+
+" Create local mappings for a tag window
+function! s:SetMappings(window)
+  let l:old_nr = winnr()
+  exec a:window . 'wincmd w'
+  noremap <buffer> gd :call guten_tag#mapping#GotoDefinition()<CR>
+  exec l:old_nr . 'wincmd w'
 endfunction
