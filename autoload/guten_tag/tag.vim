@@ -36,7 +36,7 @@ function! guten_tag#tag#Tag(line)
     let l:fields[l:key] = l:value
   endfor
   let l:res.fields = l:fields
-  call s:TagPostprocessing(l:res)
+  call guten_tag#postprocessing#Postprocess(l:res)
   return res
 endfunction
 
@@ -82,12 +82,4 @@ endfunction
 " unavailable.
 function! guten_tag#tag#TagLine(tag)
   return get(a:tag.fields, 'line', -1)
-endfunction
-
-" --- Helpers --- "
-
-" Do some actions after all fields and attributes of a tag were read
-function! s:TagPostprocessing(tag)
-  " Presently, do nothing. TODO: language-specific processing, like function
-  " signature extraction
 endfunction
