@@ -11,7 +11,7 @@ function! guten_tag#buffer#Buffer(tags_file, hierarchy)
   let l:res.tags_file = a:tags_file
   let l:res.dense = g:guten_tag_dense
   let l:res.files = []
-  for l:filename in keys(a:hierarchy)
+  for l:filename in sort(keys(a:hierarchy))
     let l:file = guten_tag#buffer#File(l:filename, a:hierarchy[l:filename])
     call add(l:res.files, l:file)
   endfor
