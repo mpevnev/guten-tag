@@ -88,7 +88,7 @@ function! s:ReadAllTags(file)
     if l:new_tag is# v:null
       continue
     endif
-    if !guten_tag#tag#IgnoreTag(l:new_tag)
+    if !guten_tag#ignore#IgnoreTag(l:new_tag)
       call add(l:all_tags, l:new_tag)
     endif
   endfor

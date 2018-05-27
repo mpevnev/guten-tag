@@ -84,16 +84,6 @@ function! guten_tag#tag#TagLine(tag)
   return get(a:tag.fields, 'line', -1)
 endfunction
 
-" Test if a tag should not appear in the hierarchy of tags
-function! guten_tag#tag#IgnoreTag(tag)
-  let l:ignore_kinds = ['i', 'import', 'include', 'namespace']
-  if !has_key(a:tag.fields, 'kind') || index(l:ignore_kinds, a:tag.fields.kind) ==# -1
-    return 0
-  else
-    return 1
-  endif
-endfunction
-
 " --- Helpers --- "
 
 " Do some actions after all fields and attributes of a tag were read
