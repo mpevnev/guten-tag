@@ -78,6 +78,12 @@ function! guten_tag#tag#TagParentName(tag)
   return v:null
 endfunction  
 
+" Return a line where the tag is located, or -1 if this information is
+" unavailable.
+function! guten_tag#tag#TagLine(tag)
+  return get(a:tag.fields, 'line', -1)
+endfunction
+
 " Test if a tag should not appear in the hierarchy of tags
 function! guten_tag#tag#IgnoreTag(tag)
   let l:ignore_kinds = ['i', 'import', 'include', 'namespace']
