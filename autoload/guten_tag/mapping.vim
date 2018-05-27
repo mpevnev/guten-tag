@@ -4,7 +4,7 @@
 
 " Goto definition of a tag under the cursor.
 function! guten_tag#mapping#GotoDefinition()
-  let l:tag = guten_tag#buffer#TagAtLine(w:buffer, line('.'))
+  let l:tag = guten_tag#buffer#TagAtLine(b:buffer, line('.'))
   if l:tag is# v:null
     return
   endif
