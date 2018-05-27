@@ -40,6 +40,24 @@ function! guten_tag#tag#Tag(line)
   return res
 endfunction
 
+" Compare two tags
+function! guten_tag#tag#Compare(a, b)
+  let l:kind_a = guten_tag#tag#TagKind(a:a)
+  let l:kind_b = guten_tag#tag#TagKind(a:b)
+  if l:kind_a <# l:kind_b
+    return -1
+  elseif l:kind_a ># l:kind_b
+    return 1
+  endif
+  if a:a.name <# a:b.name
+    return -1
+  elseif a:a.name ># a:b.name
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
 " Return the first tag with a given name from a list, or null if there's no
 " such tag
 function! guten_tag#tag#TagByName(name, list)

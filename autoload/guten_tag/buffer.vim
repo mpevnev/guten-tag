@@ -23,6 +23,7 @@ function! guten_tag#buffer#File(filename, tags)
   let l:res = {}
   let l:res.name = a:filename
   let l:res.tags = a:tags
+  call sort(l:res.tags, function('guten_tag#tag#Compare'))
   return l:res
 endfunction
 
@@ -153,4 +154,3 @@ function! s:MakeLine(tag, indent_level, print_parent)
   endif
   return repeat(' ', a:indent_level) . l:new_line
 endfunction
-
