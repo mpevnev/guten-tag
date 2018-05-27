@@ -20,10 +20,18 @@ function! guten_tag#tag#Tag(line)
     call guten_tag#postprocessing#Postprocess(l:res)
     return l:res
   endif
-  let l:search = l:rest[0]
+  let l:search_blocks = 0
+  while l:search_blocks <# len(l:rest)
+    let l:block = l:rest[l:search_blocks]
+    let l:search_blocks += 1
+    if l:block =~# ';"'
+      break
+    endif
+  endwhile
+  let l:search = join(l:rest[0 : l:search_blocks - 1], "\t")
   let l:res.search_cmd = strcharpart(l:search, 1, len(l:search) - 4)
   " Extract the fields
-  let l:extract_fields = l:rest[1:]
+  let l:extract_fields = l:rest[l:search_blocks:]
   if len(l:extract_fields) ==# 0
     let l:res.fields = {}
     call guten_tag#postprocessing#Postprocess(l:res)
