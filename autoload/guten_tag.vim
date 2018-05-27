@@ -123,13 +123,13 @@ function! s:ReopenTagWindow(buffer)
   endif
 endfunction
 
-" Reset window's contents and update its buffer property to a new buffer.
+" Reset window's contents and buffer's (Vim's) buffer (Guten Tag) reference.
 function! s:RefreshWindow(window, buffer)
   let l:old_nr = winnr()
   let a:buffer.dense = g:guten_tag_dense
   let l:content = guten_tag#buffer#BufferToText(a:buffer)
   exec a:window . 'wincmd w'
-  let w:buffer = a:buffer
+  let b:buffer = a:buffer
   setlocal modifiable
   normal! ggdG
   call append(0, l:content)

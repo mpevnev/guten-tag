@@ -71,28 +71,29 @@ endfunction
 " Return a tag at a given line in a buffer, or v:null if there's nothing at
 " this line.
 function! guten_tag#buffer#TagAtLine(buffer, line)
-  let l:filestart = 0
+  let l:filestart = 1
   for l:file in a:buffer.files
     if a:line ==# l:filestart
       return v:null
     endif
     let l:tags = s:AllTags(l:file)
     let l:numtags = len(l:tags)
-    let l:index_after_header = a:line - (l:filestart + 1)
     if a:buffer.dense
-      if l:index_after_header <# l:numtags
-        return l:tags[l:index_after_header]
+      if a:line ># l:filestart + l:numtags
+        let l:filestart += l:numtags
+        continue
       endif
-      let l:filestart += l:numtags
+      return l:tags[a:line - l:filestart - 1]
     else
-      if l:index_after_header <# l:numtags
-        if l:index_after_header % 2 ==# 0
-          " Empty lines are at even indices
-          return v:null
-        endif
-        return l:tags[l:index_after_header / 2]
+      if a:line ># l:filestart + l:numtags * 2
+        let l:filestart += l:numtags * 2
+        continue
       endif
-      let l:filestart += l:numtags * 2
+      let l:index = a:line - l:filestart - 1
+      if l:index % 2 ==# 1
+        return v:null
+      endif
+      return l:tags[l:index / 2]
     endif
   endfor
   return v:null
