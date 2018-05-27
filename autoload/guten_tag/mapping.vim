@@ -29,10 +29,12 @@ function! guten_tag#mapping#GotoDefinition() abort
   endif
   exec l:command
   let l:line = guten_tag#tag#TagLine(l:tag)
-  if l:line is# v:null
+  if l:line <# 0
     normal gg
-    call search(l:tag.search_cmd)
+    echomsg 'searching by /' . l:tag.search_cmd . '/'
+    call search(l:tag.search_cmd, 'cw')
   else
+    echomsg 'jumping to a line ' . l:line
     exec "normal " . l:line . 'G'
   endif
 endfunction
