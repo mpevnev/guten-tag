@@ -12,10 +12,10 @@ endfunction
 
 " Guess 'language' field if it is not set already
 function! s:GuessLanguage(tag)
-  if has_key(let a:tag.fields, 'language')
+  if has_key(a:tag.fields, 'language')
     return
   endif
-  let l:file = let a:tag.filename
+  let l:file = a:tag.filename
   if l:file =~# '\.asm$'
     let a:tag.fields.language = 'Asm'
   elseif l:file =~# '\.c$|\.h$'
