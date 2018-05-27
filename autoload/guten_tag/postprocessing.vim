@@ -5,7 +5,7 @@
 " --- Main thing --- "
 
 function! guten_tag#postprocessing#Postprocess(tag)
-  "call s:GuessLanguage(a:tag)
+  call s:GuessLanguage(a:tag)
 endfunction
 
 " --- Helpers --- "
