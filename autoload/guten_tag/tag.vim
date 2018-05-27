@@ -12,19 +12,25 @@ function! guten_tag#tag#Tag(line)
   let l:res.name = l:extract_name_and_file[0]
   let l:res.filename = l:extract_name_and_file[1]
   let l:res.children = []
-  let l:rest = join(l:extract_name_and_file[2:], "\t")
+  let l:rest = l:extract_name_and_file[2:]
   " Extract EX search command
-  let l:extract_fields = split(l:rest, '"')
-  if len(l:extract_fields) <= 1
-    res.fields = {}
-    call s:TagPostprocessing(l:res)
-    return res
+  if len(l:res) ==# 0
+    let l:res.search_cmd = v:null
+    let l:res.fields = {}
+    call guten_tag#postprocessing#Postprocess(l:res)
+    return l:res
   endif
-  let l:res.search_cmd = l:extract_fields[0]
-  " Just in case the fields contain a '"', join them back
-  let l:extract_fields = join(l:extract_fields[1:], '"')
+  let l:search = l:rest[0]
+  let l:res.search_cmd = strcharpart(l:search, 1, len(l:search) - 4)
+  " Extract the fields
+  let l:extract_fields = l:rest[1:]
+  if len(l:extract_fields) ==# 0
+    let l:res.fields = {}
+    call guten_tag#postprocessing#Postprocess(l:res)
+    return l:res
+  endif
   let l:fields = {}
-  for l:pair in split(l:extract_fields, "\t")
+  for l:pair in l:extract_fields
     let l:split = split(l:pair, ':')
     if len(l:split) == 1
       let l:key = 'kind'
