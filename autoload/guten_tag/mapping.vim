@@ -31,10 +31,8 @@ function! guten_tag#mapping#GotoDefinition() abort
   let l:line = guten_tag#tag#TagLine(l:tag)
   if l:line <# 0
     normal gg
-    echomsg 'searching by /' . l:tag.search_cmd . '/'
     call search(l:tag.search_cmd, 'cw')
   else
-    echomsg 'jumping to a line ' . l:line
     exec "normal " . l:line . 'G'
   endif
 endfunction
