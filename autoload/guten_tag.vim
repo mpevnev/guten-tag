@@ -84,11 +84,10 @@ function! s:ReadAllTags(file)
   " Read all tags
   let l:all_tags = []
   for l:line in l:lines
-    try
-      let l:new_tag = guten_tag#tag#Tag(l:line)
-    catch /Comment line/
+    let l:new_tag = guten_tag#tag#Tag(l:line)
+    if l:new_tag is# v:null
       continue
-    endtry
+    endif
     if !guten_tag#tag#IgnoreTag(l:new_tag)
       call add(l:all_tags, l:new_tag)
     endif

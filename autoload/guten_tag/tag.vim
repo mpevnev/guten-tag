@@ -2,10 +2,10 @@
 " Maintainer: Michail Pevnev <mpevnev@gmail.com>
 " License: Vim's license
 
-" Create a tag from a line
+" Create and return a tag from a line, or v:null if the line is a comment
 function! guten_tag#tag#Tag(line)
   if a:line =~# '\v^!.*'
-    throw 'Comment line'
+    return v:null
   endif
   let l:extract_name_and_file = split(a:line, "\t")
   let l:res = {}
@@ -17,6 +17,7 @@ function! guten_tag#tag#Tag(line)
   let l:extract_fields = split(l:rest, '"')
   if len(l:extract_fields) <= 1
     res.fields = {}
+    call s:TagPostprocessing(l:res)
     return res
   endif
   let l:res.search_cmd = l:extract_fields[0]
