@@ -81,13 +81,13 @@ function! guten_tag#buffer#TagAtLine(buffer, line)
     let l:numtags = len(l:tags)
     if a:buffer.dense
       if a:line ># l:filestart + l:numtags
-        let l:filestart += l:numtags
+        let l:filestart += l:numtags + 1
         continue
       endif
       return l:tags[a:line - l:filestart - 1]
     else
       if a:line ># l:filestart + l:numtags * 2
-        let l:filestart += l:numtags * 2
+        let l:filestart += l:numtags * 2 + 1
         continue
       endif
       let l:index = a:line - l:filestart - 1
