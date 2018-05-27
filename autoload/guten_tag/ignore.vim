@@ -19,17 +19,17 @@ endfunction
 
 function! s:IgnoreC(tag)
   let l:kind = guten_tag#tag#TagKind(a:tag)
-  return l:kind =~# 'h|l|v|z|L'
+  return l:kind =~# '\vh|l|v|z|L'
 endfunction
 
 function! s:IgnorePython(tag)
   let l:kind = guten_tag#tag#TagKind(a:tag)
-  return l:kind =~# 'I|i|x|z|l'
+  return l:kind =~# '\vI|i|x|z|l'
 endfunction
 
 " --- Helpers --- "
 
 let s:ignore_mapping = {
-      \ "Python": function("s:IgnorePython"),
-      \ "C": function("s:IgnoreC"),
+      \ 'Python': function('s:IgnorePython'),
+      \ 'C': function('s:IgnoreC'),
       \ }
