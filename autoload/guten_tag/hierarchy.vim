@@ -27,9 +27,9 @@ function! guten_tag#hierarchy#Hierarchy(tags)
         " If it's not possible to determine tag's parent, treat it as a top
         " level tag.
         call add(l:res, l:tag)
-        continue
+      else
+        call add(l:parent.children, l:tag)
       endif
-      call add(l:parent.children, l:tag)
     endfor
   endfor
   return s:SeparateTagsByFilename(l:res)

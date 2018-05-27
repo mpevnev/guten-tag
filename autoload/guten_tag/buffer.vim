@@ -14,6 +14,7 @@ function! guten_tag#buffer#Buffer(tags_file, hierarchy)
   for l:filename in keys(a:hierarchy)
     let l:file = guten_tag#buffer#File(l:filename, a:hierarchy[l:filename])
     call add(l:res.files, l:file)
+  endfor
   return l:res
 endfunction
 
