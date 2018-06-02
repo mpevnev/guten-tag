@@ -33,11 +33,12 @@ function! guten_tag#SetTagsPath()
   endif
   " Find a marker
   while 1
+    let l:oldpath = l:path
     let l:path = fnamemodify(l:path, ':h')
     if s:HasMarkers(l:path)
       break
     endif
-    if l:path ==# '/'
+    if l:path ==# '/' || l:path ==# l:oldpath
       return
     endif
   endwhile
