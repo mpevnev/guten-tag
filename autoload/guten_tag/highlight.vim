@@ -79,11 +79,30 @@ let s:cpp_highlight = {
       \ 'v': g:guten_tag_hi_cpp_variable,
       \ }
 
+" --- Python --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_py_class',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_py_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_py_member',
+      \ ['Identifier', 'Label'])
+call guten_tag#option#DefOpt('guten_tag_hi_py_variable',
+      \ ['Identifier', 'Identifier'])
+
+let s:python_highlight = {
+      \ 'c': g:guten_tag_hi_py_class,
+      \ 'f': g:guten_tag_hi_py_function,
+      \ 'm': g:guten_tag_hi_py_member,
+      \ 'v': g:guten_tag_hi_py_variable,
+      \ }
+
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
       \ 'C': s:c_highlight,
       \ 'C++': s:cpp_highlight,
+      \ 'Python': s:python_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind
