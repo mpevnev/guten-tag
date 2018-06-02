@@ -29,15 +29,17 @@ endfunction
 " --- C container logic --- "
 
 function! s:CanContainC(container, tag)
-  let l:cont = guten_tag#tag#TagKind(a:container)
-  let l:tag = guten_tag#tag#TagKind(a:tag)
-  if l:cont =~# '\vd|e|f|h|l|m|p|t|v|x|z|L'
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag)
+  if l:contkind =~# '\vd|e|f|h|l|m|p|t|v|x|z|L'
     return 0
   endif
-  if l:cont ==# 'g' && l:tag ==# 'e'
-    return 1
-  elseif l:cont =~# '\vs|u' && l:tag ==# 'm'
-    return 1
+  if l:contkind ==# 'g' && l:tagkind ==# 'e'
+    return get(a:tag.fields, 'enum', '') ==# a:container.name
+  elseif l:contkind ==# 's' && l:tagkind ==# 'm'
+    return get(a:tag.fields, 'struct', '') ==# a:container.name
+  elseif l:contkind ==# 'u' && l:tagkind ==# 'm'
+    return get(a:tag.fields, 'union', '') ==# a:container.name
   else
     return 0
   endif

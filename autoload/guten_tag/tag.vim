@@ -11,6 +11,7 @@ function! guten_tag#tag#Tag(line)
   let l:res = {}
   let l:res.name = l:extract_name_and_file[0]
   let l:res.filename = l:extract_name_and_file[1]
+  let l:res.parent = v:null
   let l:res.children = []
   let l:res.kind_highlight = ""
   let l:res.name_highlight = ""
@@ -88,19 +89,6 @@ endfunction
 function! guten_tag#tag#TagKind(tag)
   return strcharpart(get(a:tag.fields, 'kind', ''), 0, 1)
 endfunction
-
-" Get the name of a tag's parent, return v:null if there isn't one.
-function! guten_tag#tag#TagParentName(tag)
-  let l:fields = a:tag.fields
-  let l:fields_to_test = ['struct', 'class']
-  for l:fname in l:fields_to_test
-    let l:res = get(l:fields, l:fname, v:null)
-    if l:res isnot# v:null
-      return l:res
-    endif
-  endfor
-  return v:null
-endfunction  
 
 " Return a line where the tag is located, or -1 if this information is
 " unavailable.

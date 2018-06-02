@@ -152,7 +152,7 @@ endfunction
 " Add a line for a given tag, maybe followed by an empty line if 'dense' is
 " not set. Return the number of lines added.
 function! s:AddLine(buffer, add_to, tag, indent_level, print_parent)
-  call add(a:add_to, s:MakeLine(a:tag, a:indent_level, a:print_parent))
+  call add(a:add_to, s:MakeLine(a:tag, a:indent_level))
   if !a:buffer.dense
     call add(a:add_to, "")
     return 2
@@ -202,16 +202,10 @@ function! s:MakeHighlight(tag, line, indent)
 endfunction
 
 " Create a line from a tag
-function! s:MakeLine(tag, indent_level, print_parent)
+function! s:MakeLine(tag, indent_level)
   let l:kind = guten_tag#tag#TagKind(a:tag)
   let l:new_line = l:kind ==# '' ? '' : l:kind . ' '
   let l:new_line = l:new_line . a:tag.name
-  if a:print_parent
-    let l:parent = guten_tag#tag#TagParentName(a:tag)
-    if l:parent isnot# v:null
-      let l:new_line = l:new_line . ' (owned by ' . (l:parent) . ')'
-    endif
-  endif
   return repeat(' ', a:indent_level) . l:new_line
 endfunction
 

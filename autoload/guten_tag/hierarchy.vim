@@ -8,20 +8,8 @@
 " and values are lists of tags appearing in this file.
 function! guten_tag#hierarchy#Hierarchy(tags)
   let l:res = []
-  " First, extract top-level tags
-  for l:tag in a:tags
-    let l:parent = guten_tag#tag#TagParentName(l:tag)
-    if l:parent is# v:null
-      call add(l:res, l:tag)
-    endif
-  endfor
-  " Now, attach non-top-level tags to them
   for l:tags_in_file in values(s:SeparateTagsByFilename(a:tags))
     for l:tag in l:tags_in_file
-      let l:parent_name = guten_tag#tag#TagParentName(l:tag)
-      if l:parent_name is# v:null
-        continue
-      endif
       let l:parent = guten_tag#container#FindParent(l:tags_in_file, l:tag)
       if l:parent is# v:null
         " If it's not possible to determine tag's parent, treat it as a top
@@ -29,6 +17,7 @@ function! guten_tag#hierarchy#Hierarchy(tags)
         call add(l:res, l:tag)
       else
         call add(l:parent.children, l:tag)
+        let l:tag.parent = l:parent
       endif
     endfor
   endfor
