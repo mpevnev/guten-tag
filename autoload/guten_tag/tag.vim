@@ -84,17 +84,6 @@ function! guten_tag#tag#Compare(a, b)
   endif
 endfunction
 
-" Return the first tag with a given name from a list, or null if there's no
-" such tag
-function! guten_tag#tag#TagByName(ignore, name, list)
-  for l:tag in a:list
-    if a:ignore isnot# l:tag && l:tag.name ==# a:name
-      return l:tag
-    endif
-  endfor
-  return v:null
-endfunction
-
 " Get the first letter of 'kind' attribute
 function! guten_tag#tag#TagKind(tag)
   return strcharpart(get(a:tag.fields, 'kind', ''), 0, 1)

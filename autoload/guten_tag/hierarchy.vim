@@ -22,7 +22,7 @@ function! guten_tag#hierarchy#Hierarchy(tags)
       if l:parent_name is# v:null
         continue
       endif
-      let l:parent = guten_tag#tag#TagByName(l:tag, l:parent_name, l:tags_in_file)
+      let l:parent = guten_tag#container#FindParent(l:tags_in_file, l:tag)
       if l:parent is# v:null
         " If it's not possible to determine tag's parent, treat it as a top
         " level tag.

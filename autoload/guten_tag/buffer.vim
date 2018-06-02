@@ -74,10 +74,14 @@ function! guten_tag#buffer#FileRepr(buffer, file)
     call s:AddHighlight(l:res.highlights, l:toplevel, l:line, l:indent)
     let l:line += s:AddLine(a:buffer, l:res.text, l:toplevel, l:indent, 1)
     let l:indent += g:guten_tag_indent
+    echomsg 'Toplevel: ' . l:toplevel.name
     while len(l:traversals) ># 0
       let l:cur_trav = l:traversals[-1]
+      echomsg 'Parent: ' . l:cur_trav.parent.name
       if l:cur_trav.child_index ==# len(l:cur_trav.parent.children)
+        echomsg 'Unletting, old length is ' . len(l:traversals)
         unlet l:traversals[-1]
+        echomsg 'Last child, new length is ' . len(l:traversals)
         let l:indent -= g:guten_tag_indent
         if len(l:cur_trav.parent.children) !=# 0
           call add(l:res.folds, [l:cur_trav.foldstart, l:line - 1])
@@ -85,10 +89,16 @@ function! guten_tag#buffer#FileRepr(buffer, file)
         continue
       endif
       let l:cur = l:cur_trav.parent.children[l:cur_trav.child_index]
+      echomsg 'Processing child ' . l:cur.name
       call s:AddHighlight(l:res.highlights, l:cur, l:line, l:indent)
       let l:line += s:AddLine(a:buffer, l:res.text, l:cur, l:indent, 0)
       if len(l:cur.children) ># 0
+        echomsg 'Recursing into child ' . l:cur.name . '(' . guten_tag#tag#TagKind(l:cur) . ')'
+        for l:child in l:cur.children
+          echomsg 'Child: ' . l:child.name
+        endfor
         call add(l:traversals, s:MakeTraversal(l:cur, l:line + 1))
+        echomsg 'New length is ' . len(l:traversals)
         continue
       endif
       let l:cur_trav.child_index += 1
