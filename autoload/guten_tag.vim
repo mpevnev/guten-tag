@@ -139,6 +139,9 @@ function! s:RefreshWindow(window, buffer)
   for l:fold in l:repr.folds
     exec l:fold[0] . ',' . l:fold[1] . 'fold'
   endfor
+  if has('nvim')
+
+  endif
   exec l:old_nr . 'wincmd w'
 endfunction
 

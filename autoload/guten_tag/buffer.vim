@@ -35,6 +35,7 @@ function! guten_tag#buffer#BufferRepr(buffer)
   let l:res = {}
   let l:res.text = []
   let l:res.folds = []
+  let l:res.highlights = []
   let l:lastline = 1
   for l:file in a:buffer.files
     let l:file_repr = guten_tag#buffer#FileRepr(a:buffer, l:file)
@@ -43,16 +44,21 @@ function! guten_tag#buffer#BufferRepr(buffer)
     for l:fold in l:file_repr.folds 
       call add(l:res.folds, [l:lastline + l:fold[0], l:lastline + l:fold[1]])
     endfor
+    for l:highlight in l:file_repr.highlights
+      let l:highlight.line += l:lastline
+      call add(l:res.highlights, l:highlight)
+    endfor
     call add(l:res.folds, [l:lastline, l:lastline + l:numlines - 1])
     let l:lastline += l:numlines
   endfor
   return l:res
 endfunction
 
-" Prepare a file for output - return a dict with text lines an fold info.
+" Prepare a file for output - return a dict with text lines and fold info.
 function! guten_tag#buffer#FileRepr(buffer, file)
   let l:res = {}
   let l:res.folds = []
+  let l:res.highlights = []
   let l:filename = fnamemodify(a:file.name, ':p')
   if a:buffer.shorten_path
     let l:filename = pathshorten(l:filename)
@@ -64,7 +70,8 @@ function! guten_tag#buffer#FileRepr(buffer, file)
   let l:line = 1
   for l:toplevel in a:file.tags
     let l:indent = g:guten_tag_indent
-    let l:traversals = [s:MakeTraversal(l:toplevel, 0, l:line)]
+    let l:traversals = [s:MakeTraversal(l:toplevel, l:line)]
+    call s:AddHighlight(l:res.highlights, l:toplevel, l:line, l:indent)
     let l:line += s:AddLine(a:buffer, l:res.text, l:toplevel, l:indent, 1)
     let l:indent += g:guten_tag_indent
     while len(l:traversals) ># 0
@@ -78,12 +85,13 @@ function! guten_tag#buffer#FileRepr(buffer, file)
         continue
       endif
       let l:cur = l:cur_trav.parent.children[l:cur_trav.child_index]
+      call s:AddHighlight(l:res.highlights, l:cur, l:line, l:indent)
       let l:line += s:AddLine(a:buffer, l:res.text, l:cur, l:indent, 0)
       if len(l:cur.children) ># 0
-        call add(l:traversals, s:MakeTraversal(l:cur, 0, l:line + 1))
+        call add(l:traversals, s:MakeTraversal(l:cur, l:line + 1))
         continue
       endif
-      let l:traversals[-1].child_index += 1
+      let l:cur_trav.child_index += 1
     endwhile
   endfor
   return l:res
@@ -123,6 +131,13 @@ function! guten_tag#buffer#TagAtLine(buffer, line)
 endfunction
 
 " --- Helpers --- "
+
+" Add a highlight to a highlight list
+function! s:AddHighlight(group, tag, line, indent)
+  if has('nvim')
+    call add(a:group, s:MakeHighlight(a:tag, a:line, a:indent))
+  endif
+endfunction
 
 " Add a line for a given tag, maybe followed by an empty line if 'dense' is
 " not set. Return the number of lines added.
@@ -164,6 +179,18 @@ function! s:MakeBufferName(tags_file)
   return 'Guten Tag, ' . fnamemodify(a:tags_file, ':p')
 endfunction
 
+" Create a dict with highlight info
+function! s:MakeHighlight(tag, line, indent)
+  let l:res = {}
+  let l:res.line = a:line
+  let l:res.kind = a:tag.kind_highlight
+  let l:res.kind_col = a:indent
+  let l:res.name = a:tag.name_highlight
+  let l:res.name_col = a:indent + 2
+  let l:res.name_len = strlen(a:tag.name)
+  return l:res
+endfunction
+
 " Create a line from a tag
 function! s:MakeLine(tag, indent_level, print_parent)
   let l:kind = guten_tag#tag#TagKind(a:tag)
@@ -179,10 +206,10 @@ function! s:MakeLine(tag, indent_level, print_parent)
 endfunction
 
 " Create a dict with file traversal information.
-function! s:MakeTraversal(parent, child_index, foldstart)
+function! s:MakeTraversal(parent, foldstart)
   let l:res = {}
   let l:res.parent = a:parent
-  let l:res.child_index = a:child_index
+  let l:res.child_index = 0
   let l:res.foldstart = a:foldstart
   return l:res
 endfunction

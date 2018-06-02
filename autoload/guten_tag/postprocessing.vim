@@ -6,11 +6,12 @@
 
 function! guten_tag#postprocessing#Postprocess(tag)
   call s:GuessLanguage(a:tag)
+  call s:SetHighlighting(a:tag)
 endfunction
 
-" --- Helpers --- "
+" --- Language autodetection --- "
 
-" Guess 'language' field if it is not set already
+" Guess 'language' field if it is not set already.
 function! s:GuessLanguage(tag)
   if has_key(a:tag.fields, 'language')
     return
@@ -44,5 +45,17 @@ function! s:GuessLanguage(tag)
     let a:tag.fields.language = 'Scheme'
   elseif l:file =~# '\v\.(vim|nvim)$'
     let a:tag.fields.language = 'Vim'
+  else
+    let a:tag.fields.language = ''
   endif
+endfunction
+
+" --- Highlighting --- "
+
+" Set highlighting fields for a tag based on its language and kind.
+function! s:SetHighlighting(tag)
+  if !has('nvim')
+    return
+  endif
+  call guten_tag#highlight#SetHighlighting(a:tag)
 endfunction

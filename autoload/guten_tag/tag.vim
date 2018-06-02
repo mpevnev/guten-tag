@@ -12,6 +12,8 @@ function! guten_tag#tag#Tag(line)
   let l:res.name = l:extract_name_and_file[0]
   let l:res.filename = l:extract_name_and_file[1]
   let l:res.children = []
+  let l:res.kind_highlight = ""
+  let l:res.name_highlight = ""
   let l:rest = l:extract_name_and_file[2:]
   " Extract EX search command
   if len(l:res) ==# 0
