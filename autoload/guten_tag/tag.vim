@@ -85,16 +85,7 @@ endfunction
 
 " Get the first letter of 'kind' attribute
 function! guten_tag#tag#TagKind(tag)
-  if has_key(a:tag.fields, 'kind')
-    let l:kind = a:tag.fields.kind
-  else
-    return ""
-  endif
-  if l:kind ==# ""
-    return ""
-  else
-    return strcharpart(l:kind, 0, 1)
-  endif
+  return strcharpart(get(a:tag.fields, 'kind', ''), 0, 1)
 endfunction
 
 " Get the name of a tag's parent, return v:null if there isn't one.
