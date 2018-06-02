@@ -4,8 +4,8 @@
 
 " --- Main things --- "
 
-" Create a new window and populate it with a tag tree
-function! guten_tag#CreateTagWindow()
+" Either create a new tag window, or open an existing one.
+function! guten_tag#OpenTagWindow()
   let l:files = tagfiles()
   if len(l:files) == 0
     return
