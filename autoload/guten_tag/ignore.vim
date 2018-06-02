@@ -19,7 +19,7 @@ endfunction
 
 function! s:IgnoreC(tag)
   let l:kind = guten_tag#tag#TagKind(a:tag)
-  return l:kind =~# '\vh|l|v|z|L'
+  return l:kind =~# '\vh|l|z|L'
 endfunction
 
 function! s:IgnoreCPP(tag)
