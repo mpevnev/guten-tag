@@ -33,8 +33,12 @@ function! guten_tag#mapping#GotoDefinition() abort
     if l:tag.search_cmd isnot# v:null
       0
       call search(l:tag.search_cmd, 'cw')
+      foldopen!
+      normal! zz
     endif
   else
     exec l:line
+    foldopen!
+    normal! zz
   endif
 endfunction
