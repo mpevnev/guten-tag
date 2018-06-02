@@ -29,7 +29,7 @@ endfunction
 
 function! s:IgnorePython(tag)
   let l:kind = guten_tag#tag#TagKind(a:tag)
-  return l:kind =~# '\vI|i|x|z|l'
+  return l:kind =~# '\vn|I|i|x|z|l'
 endfunction
 
 " --- Helpers --- "
