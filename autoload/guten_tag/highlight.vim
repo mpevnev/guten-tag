@@ -11,7 +11,7 @@ let g:guten_tag_done_highlighting = 1
 
 call guten_tag#option#DefOpt('guten_tag_hi_c_enum',
       \ ['Identifier', 'Structure'])
-call guten_tag#option#DefOpt('guten_tag_hi_c_enum_members',
+call guten_tag#option#DefOpt('guten_tag_hi_c_enum_member',
       \ ['Identifier', 'Identifier'])
 call guten_tag#option#DefOpt('guten_tag_hi_c_function',
       \ ['Identifier', 'Function'])
@@ -30,7 +30,7 @@ call guten_tag#option#DefOpt('guten_tag_hi_c_variable',
 
 let s:c_highlight = {
       \ 'g': g:guten_tag_hi_c_enum,
-      \ 'e': g:guten_tag_hi_c_enum_members,
+      \ 'e': g:guten_tag_hi_c_enum_member,
       \ 'f': g:guten_tag_hi_c_function,
       \ 'd': g:guten_tag_hi_c_macro,
       \ 'm': g:guten_tag_hi_c_member,
@@ -39,6 +39,32 @@ let s:c_highlight = {
       \ 'u': g:guten_tag_hi_c_union,
       \ 'v': g:guten_tag_hi_c_variable,
       \ }
+
+" --- C++ --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_class',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_enum',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_enum_member',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_macro',
+      \ ['Identifier', 'Macro'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_member',
+      \ ['Identifier', 'Label'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_namespace',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_struct',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_typedef',
+      \ ['Identifier', 'Typedef'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_union',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_cpp_variable',
+      \ ['Identifier', 'Identifier'])
+
 
 " --- Tying this all together --- "
 
