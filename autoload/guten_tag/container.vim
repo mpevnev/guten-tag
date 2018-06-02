@@ -45,6 +45,25 @@ function! s:CanContainC(container, tag)
   endif
 endfunction
 
+" --- C++ container logic --- "
+
+function! s:CanContainCPP(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag)
+  if l:contkind =~# '\vd|e|f|h|l|m|p|t|v|x|z|L|N|U'
+    return 0
+  endif
+  if l:contkind ==# 'g' && l:tagkind ==# 'e'
+    return get(a:tag.fields, 'enum', '') ==# a:container.name
+  elseif l:contkind ==# 'c' && l:tagkind ==# 'm'
+    return get(a:tag.fields, 'class', '') ==# a:container.name
+  elseif l:contkind ==# 's' && l:tagkind ==# 'm'
+    return get(a:tag.fields, 'struct', '') ==# a:container.name
+  else
+    return 0
+  endif
+endfunction
+
 " --- Tying this all together --- "
 
 let s:container_mapping = {
