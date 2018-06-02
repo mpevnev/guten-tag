@@ -64,9 +64,21 @@ function! s:CanContainCPP(container, tag)
   endif
 endfunction
 
+" --- Python container logic --- "
+
+function! s:CanContainPython(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag)
+  if l:contkind =~# '\vn|v|I|i|x|z|l|f'
+    return 0
+  endif
+  return get(a:tag.fields, 'class', '') ==# a:container.name
+endfunction
+
 " --- Tying this all together --- "
 
 let s:container_mapping = {
-      \ 'C': function('s:CanContainC')
-      \ 'C++': function('s:CanContainCPP')
+      \ 'C': function('s:CanContainC'),
+      \ 'C++': function('s:CanContainCPP'),
+      \ 'Python': function('s:CanContainPython'),
       \ }
