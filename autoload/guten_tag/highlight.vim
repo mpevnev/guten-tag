@@ -65,11 +65,25 @@ call guten_tag#option#DefOpt('guten_tag_hi_cpp_union',
 call guten_tag#option#DefOpt('guten_tag_hi_cpp_variable',
       \ ['Identifier', 'Identifier'])
 
+let s:cpp_highlight = {
+      \ 'c': g:guten_tag_hi_cpp_class,
+      \ 'g': g:guten_tag_hi_cpp_enum,
+      \ 'e': g:guten_tag_hi_cpp_enum_member,
+      \ 'f': g:guten_tag_hi_cpp_function,
+      \ 'd': g:guten_tag_hi_cpp_macro,
+      \ 'm': g:guten_tag_hi_cpp_member,
+      \ 'n': g:guten_tag_hi_cpp_namespace,
+      \ 's': g:guten_tag_hi_cpp_struct,
+      \ 't': g:guten_tag_hi_cpp_typedef,
+      \ 'u': g:guten_tag_hi_cpp_union,
+      \ 'v': g:guten_tag_hi_cpp_variable,
+      \ }
 
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
-      \ 'C': s:c_highlight
+      \ 'C': s:c_highlight,
+      \ 'C++': s:cpp_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind
