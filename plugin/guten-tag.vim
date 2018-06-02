@@ -21,6 +21,7 @@ call guten_tag#option#DefOpt('guten_tag_tags_when_forbidden', &tags)
 call guten_tag#option#DefOpt('guten_tag_dense', 0)
 call guten_tag#option#DefOpt('guten_tag_indent', 2)
 call guten_tag#option#DefOpt('guten_tag_split_style', 'vertical')
+call guten_tag#option#DefOpt('guten_tag_starting_foldlevel', 99)
 call guten_tag#option#DefOpt('guten_tag_window_height', 30)
 call guten_tag#option#DefOpt('guten_tag_window_width', 35)
 

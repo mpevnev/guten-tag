@@ -107,10 +107,10 @@ function! s:OpenNewWindow(buffer)
   exec l:command
   let l:tagwin_nr = winnr()
   setlocal buftype=nofile
-  setlocal nomodifiable
   exec 'file! ' . a:buffer.name
   call s:RefreshWindow(l:tagwin_nr, a:buffer)
   call s:SetMappings(l:tagwin_nr)
+  exec 'set foldlevel=' . g:guten_tag_starting_foldlevel
   exec l:old_nr . 'wincmd w'
 endfunction
 
