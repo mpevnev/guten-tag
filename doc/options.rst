@@ -38,6 +38,11 @@ Tag window settings
   Each nested tag will be indented by this amount relative to its parent.
   Can be set after the window is created, but needs refreshing for the option
   to take effect.
+- ``guten_tag_starting_foldlevel``: integer in range 0-99
+
+  When a new tag window is opened, its foldlevel option will be set to this.
+  Setting this variable to another value will affect *new* windows opened
+  afterwards.
 - ``guten_tag_split_style``: 'vertical' | 'horizontal'.
 
   If set to vertical, opening tag window will use vertical split, if to
