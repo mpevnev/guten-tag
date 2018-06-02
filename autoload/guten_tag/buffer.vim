@@ -29,40 +29,56 @@ endfunction
 
 " --- Presentation --- "
 
-" Convert a buffer object to its textual representation (a list of lines)
-function! guten_tag#buffer#BufferToText(buffer)
-  let l:res = []
+" Prepare a buffer for output - return a dict with text lines and fold info.
+function! guten_tag#buffer#BufferRepr(buffer)
+  let l:res = {}
+  let l:res.text = []
+  let l:res.folds = []
+  let l:lastline = 1
   for l:file in a:buffer.files
-    let l:res += guten_tag#buffer#FileToText(a:buffer, l:file)
+    let l:file_repr = guten_tag#buffer#FileRepr(a:buffer, l:file)
+    let l:res.text += l:file_repr.text
+    let l:numlines = len(l:file_repr.text)
+    for l:fold in l:file_repr.folds 
+      call add(l:res.folds, [l:lastline + l:fold[0], l:lastline + l:fold[1]])
+    endfor
+    call add(l:res.folds, [l:lastline, l:lastline + l:numlines - 1])
+    let l:lastline += l:numlines
   endfor
   return l:res
 endfunction
 
-" Convert a file object to its textual representation (a list of lines)
-function! guten_tag#buffer#FileToText(buffer, file)
-  let l:res = [fnamemodify(a:file.name, ':p')]
+" Prepare a file for output - return a dict with text lines an fold info.
+function! guten_tag#buffer#FileRepr(buffer, file)
+  let l:res = {}
+  let l:res.folds = []
+  let l:res.text = [fnamemodify(a:file.name, ':p')]
   if len(a:file.tags) ==# 0
     return l:res
   endif
+  let l:line = 1
   for l:toplevel in a:file.tags
     let l:indent = g:guten_tag_indent
-    call s:AddLine(a:buffer, l:res, l:toplevel, l:indent, 1)
-    let l:traversal = [[l:toplevel, 0]] " tag, current child index
+    let l:traversals = [s:MakeTraversal(l:toplevel, 0, l:line)]
+    let l:line += s:AddLine(a:buffer, l:res.text, l:toplevel, l:indent, 1)
     let l:indent += g:guten_tag_indent
-    while len(l:traversal) ># 0
-      let [l:parent, l:child_index] = l:traversal[-1]
-      if l:child_index ==# len(l:parent.children)
-        unlet l:traversal[-1]
+    while len(l:traversals) ># 0
+      let l:cur_trav = l:traversals[-1]
+      if l:cur_trav.child_index ==# len(l:cur_trav.parent.children)
+        unlet l:traversals[-1]
         let l:indent -= g:guten_tag_indent
+        if len(l:cur_trav.parent.children) !=# 0
+          call add(l:res.folds, [l:cur_trav.foldstart, l:line - 1])
+        endif
         continue
       endif
-      let l:cur = l:parent.children[l:child_index]
-      call s:AddLine(a:buffer, l:res, l:cur, l:indent, 0)
+      let l:cur = l:cur_trav.parent.children[l:cur_trav.child_index]
+      let l:line += s:AddLine(a:buffer, l:res.text, l:cur, l:indent, 0)
       if len(l:cur.children) ># 0
-        call add(l:traversal, [l:cur, 0])
+        call add(l:traversals, s:MakeTraversal(l:cur, 0, l:line + 1))
         continue
       endif
-      let l:traversal[-1][1] += 1
+      let l:traversals[-1].child_index += 1
     endwhile
   endfor
   return l:res
@@ -104,12 +120,14 @@ endfunction
 " --- Helpers --- "
 
 " Add a line for a given tag, maybe followed by an empty line if 'dense' is
-" not set
+" not set. Return the number of lines added.
 function! s:AddLine(buffer, add_to, tag, indent_level, print_parent)
   call add(a:add_to, s:MakeLine(a:tag, a:indent_level, a:print_parent))
   if !a:buffer.dense
     call add(a:add_to, "")
+    return 2
   endif
+  return 1
 endfunction
 
 " Return a flat list of all tags in a file
@@ -153,4 +171,13 @@ function! s:MakeLine(tag, indent_level, print_parent)
     endif
   endif
   return repeat(' ', a:indent_level) . l:new_line
+endfunction
+
+" Create a dict with file traversal information.
+function! s:MakeTraversal(parent, child_index, foldstart)
+  let l:res = {}
+  let l:res.parent = a:parent
+  let l:res.child_index = a:child_index
+  let l:res.foldstart = a:foldstart
+  return l:res
 endfunction

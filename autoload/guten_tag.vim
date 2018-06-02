@@ -128,13 +128,17 @@ endfunction
 function! s:RefreshWindow(window, buffer)
   let l:old_nr = winnr()
   let a:buffer.dense = g:guten_tag_dense
-  let l:content = guten_tag#buffer#BufferToText(a:buffer)
+  let l:repr = guten_tag#buffer#BufferRepr(a:buffer)
   exec a:window . 'wincmd w'
   let b:buffer = a:buffer
   setlocal modifiable
   %delete
-  call append(0, l:content)
+  call append(0, l:repr.text)
   setlocal nomodifiable
+  setlocal foldmethod=manual
+  for l:fold in l:repr.folds
+    exec l:fold[0] . ',' . l:fold[1] . 'fold'
+  endfor
   exec l:old_nr . 'wincmd w'
 endfunction
 
