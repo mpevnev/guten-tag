@@ -68,4 +68,5 @@ endfunction
 
 let s:container_mapping = {
       \ 'C': function('s:CanContainC')
+      \ 'C++': function('s:CanContainCPP')
       \ }
