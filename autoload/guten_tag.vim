@@ -43,11 +43,11 @@ function! guten_tag#SetTagsPath()
     endif
   endwhile
   " Make a tags option
-  let l:toplevel_tags = []
+  let l:tagfiles = []
   for l:tagfile in g:guten_tag_tags_files
-    call add(l:toplevel_tags, l:path . '/' . l:tagfile)
+    call add(l:tagfiles, l:path . '/' . l:tagfile)
   endfor
-  let &l:tags = join(l:toplevel_tags, ',')
+  let &l:tags = join(l:tagfiles, ',')
 endfunction
 
 " --- Helpers for tag option manipulation --- "
