@@ -10,6 +10,7 @@ function! guten_tag#buffer#Buffer(tags_file, hierarchy)
   let l:res.name = s:MakeBufferName(a:tags_file)
   let l:res.tags_file = a:tags_file
   let l:res.dense = g:guten_tag_dense
+  let l:res.shorten_path = g:guten_tag_shorten_path
   let l:res.files = []
   for l:filename in sort(keys(a:hierarchy))
     let l:file = guten_tag#buffer#File(l:filename, a:hierarchy[l:filename])
@@ -52,7 +53,11 @@ endfunction
 function! guten_tag#buffer#FileRepr(buffer, file)
   let l:res = {}
   let l:res.folds = []
-  let l:res.text = [fnamemodify(a:file.name, ':p')]
+  let l:filename = fnamemodify(a:file.name, ':p')
+  if a:buffer.shorten_path
+    let l:filename = pathshorten(l:filename)
+  endif
+  let l:res.text = [l:filename]
   if len(a:file.tags) ==# 0
     return l:res
   endif
