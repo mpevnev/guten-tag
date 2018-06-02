@@ -45,7 +45,7 @@ function! guten_tag#buffer#BufferRepr(buffer)
       call add(l:res.folds, [l:lastline + l:fold[0], l:lastline + l:fold[1]])
     endfor
     for l:highlight in l:file_repr.highlights
-      let l:highlight.line += l:lastline
+      let l:highlight.line += l:lastline - 1
       call add(l:res.highlights, l:highlight)
     endfor
     call add(l:res.folds, [l:lastline, l:lastline + l:numlines - 1])
@@ -88,8 +88,6 @@ function! guten_tag#buffer#FileRepr(buffer, file)
       call s:AddHighlight(l:res.highlights, l:cur, l:line, l:indent)
       let l:line += s:AddLine(a:buffer, l:res.text, l:cur, l:indent, 0)
       if len(l:cur.children) ># 0
-        for l:child in l:cur.children
-        endfor
         call add(l:traversals, s:MakeTraversal(l:cur, l:line + 1))
         continue
       endif

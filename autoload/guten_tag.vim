@@ -140,7 +140,16 @@ function! s:RefreshWindow(window, buffer)
     exec l:fold[0] . ',' . l:fold[1] . 'fold'
   endfor
   if has('nvim')
-
+    if exists('b:highlight')
+      call nvim_buf_clear_highlight(b:highlight)
+    endif
+    let b:highlight = nvim_buf_add_highlight(0, 0, "", 0, 0, 0)
+    for l:hl in l:repr.highlights
+      call nvim_buf_add_highlight(0, b:highlight, l:hl.kind, l:hl.line,
+            \ l:hl.kind_col, l:hl.kind_col + 1)
+      call nvim_buf_add_highlight(0, b:highlight, l:hl.name, l:hl.line,
+            \ l:hl.name_col, l:hl.name_col + l:hl.name_len)
+    endfor
   endif
   exec l:old_nr . 'wincmd w'
 endfunction
