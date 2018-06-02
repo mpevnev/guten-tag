@@ -39,10 +39,20 @@ function! guten_tag#tag#Tag(line)
   endif
   let l:fields = {}
   for l:pair in l:extract_fields
+    if l:pair =~# '\v.*:$'
+      let l:no_value = 1
+    else
+      let l:no_value = 0
+    endif
     let l:split = split(l:pair, ':')
     if len(l:split) == 1
-      let l:key = 'kind'
-      let l:value = l:split[0]
+      if l:no_value
+        let l:key = l:split[0]
+        let l:value = ""
+      else
+        let l:key = 'kind'
+        let l:value = l:split[0]
+      endif
     else
       let l:key = l:split[0]
       let l:value = join(l:split[1:], ':')
