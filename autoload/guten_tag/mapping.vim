@@ -31,10 +31,10 @@ function! guten_tag#mapping#GotoDefinition() abort
   let l:line = guten_tag#tag#TagLine(l:tag)
   if l:line <# 0 
     if l:tag.search_cmd isnot# v:null
-      normal gg
+      0
       call search(l:tag.search_cmd, 'cw')
     endif
   else
-    exec "normal " . l:line . 'G'
+    exec l:line
   endif
 endfunction

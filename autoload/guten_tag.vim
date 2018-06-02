@@ -132,7 +132,7 @@ function! s:RefreshWindow(window, buffer)
   exec a:window . 'wincmd w'
   let b:buffer = a:buffer
   setlocal modifiable
-  normal! ggdG
+  %delete
   call append(0, l:content)
   setlocal nomodifiable
   exec l:old_nr . 'wincmd w'
