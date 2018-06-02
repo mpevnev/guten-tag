@@ -74,9 +74,9 @@ endfunction
 
 " Return the first tag with a given name from a list, or null if there's no
 " such tag
-function! guten_tag#tag#TagByName(name, list)
+function! guten_tag#tag#TagByName(ignore, name, list)
   for l:tag in a:list
-    if l:tag.name ==# a:name
+    if a:ignore isnot# l:tag && l:tag.name ==# a:name
       return l:tag
     endif
   endfor
