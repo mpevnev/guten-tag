@@ -126,6 +126,13 @@ function! s:CanContainLisp(container, tag)
   return 0
 endfunction
 
+" --- Lua --- "
+
+function! s:CanContainLua(container, tag)
+  " Yeah, same here - no tags for anything.
+  return 0
+endfunction
+
 " --- Python --- "
 
 function! s:CanContainPython(container, tag)
@@ -146,5 +153,6 @@ let s:container_mapping = {
       \ 'D': function('s:CanContainD'),
       \ 'Java': function('s:CanContainJava'),
       \ 'Lisp': function('s:CanContainLisp'),
+      \ 'Lua': function('s:CanContainLua'),
       \ 'Python': function('s:CanContainPython'),
       \ }
