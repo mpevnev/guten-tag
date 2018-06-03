@@ -185,6 +185,33 @@ let s:java_highlight = {
       \ 'm': g:guten_tag_hi_java_method,
       \ }
 
+" --- JavaScript --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_js_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_js_class',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_js_method',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_js_property',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_js_constant',
+      \ ['Identifier', 'Constant'])
+call guten_tag#option#DefOpt('guten_tag_hi_js_global',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_js_generator',
+      \ ['Identifier', 'Function'])
+
+let s:js_highlight = {
+      \ 'f': g:guten_tag_hi_js_function,
+      \ 'c': g:guten_tag_hi_js_class,
+      \ 'm': g:guten_tag_hi_js_method,
+      \ 'p': g:guten_tag_hi_js_property,
+      \ 'C': g:guten_tag_hi_js_constant,
+      \ 'v': g:guten_tag_hi_js_global,
+      \ 'g': g:guten_tag_hi_js_generator,
+      \ }
+
 " --- Lisp --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_lisp_function',
@@ -277,6 +304,7 @@ let s:highlight_groups = {
       \ 'D': s:d_highlight,
       \ 'Go': s:go_highlight,
       \ 'Java': s:java_highlight,
+      \ 'JavaScript': s:js_highlight,
       \ 'Lisp': s:lisp_highlight,
       \ 'Lua': s:lua_highlight,
       \ 'Perl': s:perl_highlight,

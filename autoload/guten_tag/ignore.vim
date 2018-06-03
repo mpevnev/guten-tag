@@ -42,6 +42,10 @@ function! s:IgnoreJava(tag)
   return l:kind =~# '\vl|p'
 endfunction
 
+function! s:IgnoreJavaScript(tag)
+  return a:tag.name =~# '\v^AnonymousFunction\x*$'
+endfunction
+
 function! s:IgnorePerl(tag)
   let l:kind = guten_tag#tag#TagKind(a:tag)
   return l:kind ==# 'd'
@@ -65,6 +69,7 @@ let s:ignore_mapping = {
       \ 'D': function('s:IgnoreD'),
       \ 'Go': function('s:IgnoreGo'),
       \ 'Java': function('s:IgnoreJava'),
+      \ 'JavaScript': function('s:IgnoreJavaScript'),
       \ 'Perl': function('s:IgnorePerl'),
       \ 'Python': function('s:IgnorePython'),
       \ 'R': function('s:IgnoreR'),

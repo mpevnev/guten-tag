@@ -185,6 +185,21 @@ function! s:ContainsJava(container, tag)
   endif
 endfunction
 
+" --- JavaScript --- "
+
+function! s:CanHaveParentJavaScript(tag)
+  return has_key(a:tag.fields, 'class')
+endfunction
+
+function! s:ContainsJavaScript(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  if l:contkind =~# '\vf|m|p|C|v|g'
+    return 0
+  endif
+  let l:contname = guten_tag#util#QualifiedName(a:container, '.')
+  return get(a:tag.fields, 'class') ==# l:contname
+endfunction
+
 " --- Lisp --- "
 
 function! s:ContainsLisp(container, tag)
@@ -256,6 +271,7 @@ let s:can_have_parent_mapping = {
       \ 'D': function('s:CanHaveParentD'),
       \ 'Go': function('s:CanHaveParentGo'),
       \ 'Java': function('s:CanHaveParentJava'),
+      \ 'JavaScript': function('s:CanHaveParentJavaScript'),
       \ 'Python': function('s:CanHaveParentPython'),
       \ 'Ruby': function('s:CanHaveParentRuby'),
       \ }
@@ -267,6 +283,7 @@ let s:contains_mapping = {
       \ 'D': function('s:ContainsD'),
       \ 'Go': function('s:ContainsGo'),
       \ 'Java': function('s:ContainsJava'),
+      \ 'JavaScript': function('s:ContainsJavaScript'),
       \ 'Lisp': function('s:ContainsLisp'),
       \ 'Lua': function('s:ContainsLua'),
       \ 'Perl': function('s:ContainsPerl'),
