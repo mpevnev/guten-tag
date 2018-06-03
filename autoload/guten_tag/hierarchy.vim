@@ -12,8 +12,6 @@ function! guten_tag#hierarchy#Hierarchy(tags)
     for l:tag in l:tags_in_file
       let l:parent = guten_tag#container#FindParent(l:tags_in_file, l:tag)
       if l:parent is# v:null
-        " If it's not possible to determine tag's parent, treat it as a top
-        " level tag.
         call add(l:res, l:tag)
       else
         call add(l:parent.children, l:tag)
