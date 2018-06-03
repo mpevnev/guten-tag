@@ -11,6 +11,7 @@ function! guten_tag#buffer#Buffer(tags_file, hierarchy)
   let l:res.tags_file = a:tags_file
   let l:res.dense = g:guten_tag_dense
   let l:res.shorten_path = g:guten_tag_shorten_path
+  let l:res.show_signatures = g:guten_tag_show_signatures
   let l:res.files = []
   for l:filename in sort(keys(a:hierarchy))
     let l:file = guten_tag#buffer#File(l:filename, a:hierarchy[l:filename])
@@ -146,7 +147,7 @@ endfunction
 " Add a line for a given tag, maybe followed by an empty line if 'dense' is
 " not set. Return the number of lines added.
 function! s:AddLine(buffer, add_to, tag, indent_level, print_parent)
-  call add(a:add_to, s:MakeLine(a:tag, a:indent_level))
+  call add(a:add_to, s:MakeLine(a:buffer, a:tag, a:indent_level))
   if !a:buffer.dense
     call add(a:add_to, "")
     return 2
@@ -196,11 +197,15 @@ function! s:MakeHighlight(tag, line, indent)
 endfunction
 
 " Create a line from a tag
-function! s:MakeLine(tag, indent_level)
+function! s:MakeLine(buffer, tag, indent_level)
   let l:kind = guten_tag#tag#TagKind(a:tag)
   let l:new_line = l:kind ==# '' ? '' : l:kind . ' '
   let l:new_line = l:new_line . a:tag.name
-  return repeat(' ', a:indent_level) . l:new_line
+  let l:new_line = repeat(' ', a:indent_level) . l:new_line
+  if has_key(a:tag.fields, 'signature') && a:buffer.show_signatures
+    let l:new_line = l:new_line . a:tag.fields.signature
+  endif
+  return l:new_line
 endfunction
 
 " Create a dict with file traversal information.
