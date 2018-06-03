@@ -109,38 +109,36 @@ endfunction
 " --- D --- "
 
 function! s:CanHaveParentD(tag)
-  let l:kind = guten_tag#tag#TagKind(a:tag)
-  if l:kind ==# 'e'
-    return has_key(a:tag.fields, 'enum')
-  elseif l:kind =~# '\va|c|g|f|i|m|X|n|p|s|T|u'
-    return guten_tag#util#HasAny(a:tag.fields, ['struct', 'class', 'template', 'mixin'])
-  else
-    return 0
-  endif
+  return guten_tag#util#HasAny(a:tag.fields, ['struct', 'class', 'template', 'mixin',
+        \ 'namespace', 'module', 'enum', 'union', 'function', 'interface'])
 endfunction
 
 function! s:ContainsD(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
-  let l:tagkind = guten_tag#tag#TagKind(a:tag)
-  if l:contkind =~# '\va|e|l|M|n|p|v|V'
+  if l:contkind =~# '\va|e|x|l|m|p|v|V'
     return 0
   endif
+  let l:contname = guten_tag#util#QualifiedName(a:container, '.')
   if l:contkind ==# 'c'
-    return get(a:tag.fields, 'class', '') ==# a:container.name
-  elseif l:contkind ==# 'g'
-    return get(a:tag.fields, 'enum', '') ==# a:container.name
+    return get(a:tag.fields, 'class', '') ==# l:contname
+  elseif l:contkind ==# 'g' 
+    return get(a:tag.fields, 'enum', '') ==# l:contname
   elseif l:contkind ==# 'f'
-    return get(a:tag.fields, 'function', '') ==# a:container.name
+    return get(a:tag.fields, 'function', '') ==# l:contname
   elseif l:contkind ==# 'i'
-    return get(a:tag.fields, 'interface', '') ==# a:container.name
+    return get(a:tag.fields, 'interface', '') ==# l:contname
   elseif l:contkind ==# 'X'
-    return get(a:tag.fields, 'mixin', '') ==# a:container.name
+    return get(a:tag.fields, 'mixin', '') ==# l:contname
+  elseif l:contkind ==# 'M'
+    return get(a:tag.fields, 'module', '') ==# l:contname
+  elseif l:contkind ==# 'n'
+    return get(a:tag.fields, 'namespace', '') ==# l:contname
   elseif l:contkind ==# 's'
-    return get(a:tag.fields, 'struct', '') ==# a:container.name
+    return get(a:tag.fields, 'struct', '') ==# l:contname
   elseif l:contkind ==# 'T'
-    return get(a:tag.fields, 'template', '') ==# a:container.name
+    return get(a:tag.fields, 'template', '') ==# l:contname
   elseif l:contkind ==# 'u'
-    return get(a:tag.fields, 'union', '') ==# a:container.name
+    return get(a:tag.fields, 'union', '') ==# l:contname
   else
     return 0
   endif
