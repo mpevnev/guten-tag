@@ -24,7 +24,7 @@ function! guten_tag#buffer#File(filename, tags)
   let l:res = {}
   let l:res.name = a:filename
   let l:res.tags = a:tags
-  call sort(l:res.tags, function('guten_tag#tag#Compare'))
+  call s:SortTags(l:res.tags)
   return l:res
 endfunction
 
@@ -206,4 +206,12 @@ function! s:MakeTraversal(parent, foldstart)
   let l:res.child_index = 0
   let l:res.foldstart = a:foldstart
   return l:res
+endfunction
+
+" Sort tags list, recursively
+function! s:SortTags(tags)
+  call sort(a:tags, function('guten_tag#tag#Compare'))
+  for l:tag in a:tags
+    call s:SortTags(l:tag.children)
+  endfor
 endfunction
