@@ -133,6 +133,12 @@ function! s:CanContainLua(container, tag)
   return 0
 endfunction
 
+" --- Perl --- "
+
+function! s:CanContainPerl(container, tag)
+  return 0
+endfunction
+
 " --- Python --- "
 
 function! s:CanContainPython(container, tag)
@@ -154,5 +160,6 @@ let s:container_mapping = {
       \ 'Java': function('s:CanContainJava'),
       \ 'Lisp': function('s:CanContainLisp'),
       \ 'Lua': function('s:CanContainLua'),
+      \ 'Perl': function('s:CanContainPerl'),
       \ 'Python': function('s:CanContainPython'),
       \ }

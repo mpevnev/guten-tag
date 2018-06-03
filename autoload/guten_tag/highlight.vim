@@ -172,6 +172,27 @@ let s:lua_highlight = {
       \ 'f': g:guten_tag_hi_lua_function,
       \ }
 
+" --- Perl --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_perl_constant',
+      \ ['Identifier', 'Constant'])
+call guten_tag#option#DefOpt('guten_tag_hi_perl_format',
+      \ ['Identifier', 'String'])
+call guten_tag#option#DefOpt('guten_tag_hi_perl_label',
+      \ ['Identifier', 'Label'])
+call guten_tag#option#DefOpt('guten_tag_hi_perl_package',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_perl_sub',
+      \ ['Identifier', 'Function'])
+
+let s:perl_highlight = {
+      \ 'c': g:guten_tag_hi_perl_constant,
+      \ 'f': g:guten_tag_hi_perl_format,
+      \ 'l': g:guten_tag_hi_perl_label,
+      \ 'p': g:guten_tag_hi_perl_package,
+      \ 's': g:guten_tag_hi_perl_sub
+      \ }
+
 " --- Python --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_py_class',
@@ -199,6 +220,7 @@ let s:highlight_groups = {
       \ 'Java': s:java_highlight,
       \ 'Lisp': s:lisp_highlight,
       \ 'Lua': s:lua_highlight,
+      \ 'Perl': s:perl_highlight,
       \ 'Python': s:python_highlight,
       \ }
 
