@@ -5,9 +5,10 @@
 " Get a fully qualified tag name
 function! guten_tag#util#QualifiedName(tag, separator)
   let l:parents = []
-  while a:tag isnot# v:null
-    let l:parents = [a:tag] + l:parents
-    let a:tag = a:tag.parent
+  let l:tag = a:tag
+  while l:tag isnot# v:null
+    let l:parents = [l:tag] + l:parents
+    let l:tag = l:tag.parent
   endwhile
-  return join(map(l:parents, {t -> t.name}), a:separator)
+  return join(map(l:parents, 'v:val.name'), a:separator)
 endfunction
