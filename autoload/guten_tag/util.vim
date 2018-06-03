@@ -9,11 +9,11 @@ endfunction
 
 " Get a fully qualified tag name
 function! guten_tag#util#QualifiedName(tag, separator)
-  let l:parents = []
+  let l:path = []
   let l:tag = a:tag
   while l:tag isnot# v:null
-    let l:parents = [l:tag] + l:parents
+    let l:path = [l:tag] + l:path
     let l:tag = l:tag.parent
   endwhile
-  return join(map(l:parents, 'v:val.name'), a:separator)
+  return join(map(l:path, 'v:val.name'), a:separator)
 endfunction
