@@ -127,6 +127,33 @@ let s:d_highlight = {
       \ 'v': g:guten_tag_hi_d_variable,
       \ }
 
+" --- Java --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_java_annotation',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_java_class', 
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_java_enum',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_java_enum_member',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_java_field',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_java_interface',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_java_method',
+      \ ['Identifier', 'Function'])
+
+let s:java_highlight = {
+      \ 'a': g:guten_tag_hi_java_annotation,
+      \ 'c': g:guten_tag_hi_java_class,
+      \ 'g': g:guten_tag_hi_java_enum,
+      \ 'e': g:guten_tag_hi_java_enum_member,
+      \ 'f': g:guten_tag_hi_java_field,
+      \ 'i': g:guten_tag_hi_java_interface,
+      \ 'm': g:guten_tag_hi_java_method,
+      \ }
+
 " --- Python --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_py_class',
@@ -151,6 +178,7 @@ let s:highlight_groups = {
       \ 'C': s:c_highlight,
       \ 'C++': s:cpp_highlight,
       \ 'D': s:d_highlight,
+      \ 'Java': s:java_highlight,
       \ 'Python': s:python_highlight,
       \ }
 

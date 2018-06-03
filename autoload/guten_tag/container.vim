@@ -99,6 +99,25 @@ function! s:CanContainD(container, tag)
   endif
 endfunction
 
+" --- Java --- "
+
+function! s:CanContainJava(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag) 
+  if l:contkind =~# '\va|f|l|m|p'
+    return 0
+  endif
+  if l:contkind ==# 'c'
+    return get(a:tag.fields, 'class', '') ==# a:container.name
+  elseif l:contkind ==# 'g'
+    return get(a:tag.fields, 'enum', '') ==# a:container.name
+  elseif l:contkind ==# 'i'
+    return get(a:tag.fields, 'interface', '') ==# a:container.name
+  else
+    return 0
+  endif
+endfunction
+
 " --- Python --- "
 
 function! s:CanContainPython(container, tag)
@@ -117,5 +136,6 @@ let s:container_mapping = {
       \ 'C': function('s:CanContainC'),
       \ 'C++': function('s:CanContainCPP'),
       \ 'D': function('s:CanContainD'),
+      \ 'Java': function('s:CanContainJava'),
       \ 'Python': function('s:CanContainPython'),
       \ }
