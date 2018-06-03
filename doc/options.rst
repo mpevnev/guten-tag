@@ -49,6 +49,11 @@ Tag window settings
   ``pathshorten``. Defaults to false. Can be set after the tag window is
   opened, run ``GutenTagOpenTagWindow`` again for the option to take effect.
 
+- ``guten_tag_show_signatures``: a boolean.
+
+  If set to a true value, function signatures (if available) will be shown in
+  the outline window.
+
 - ``guten_tag_starting_foldlevel``: integer in range 0-99.
 
   When a new tag window is opened, its foldlevel option will be set to this.
