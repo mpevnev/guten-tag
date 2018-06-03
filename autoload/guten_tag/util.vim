@@ -6,8 +6,8 @@
 function! guten_tag#util#QualifiedName(tag, separator)
   let l:parents = []
   while a:tag isnot# v:null
-    l:parents = [a:tag] + l:parents
-    a:tag = a:tag.parent
+    let l:parents = [a:tag] + l:parents
+    let a:tag = a:tag.parent
   endwhile
   return join(map(l:parents, {t -> t.name}), a:separator)
 endfunction
