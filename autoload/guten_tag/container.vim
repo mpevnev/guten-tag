@@ -4,37 +4,55 @@
 
 " --- Main stuff --- "
 
+" Return true if the tag can have a parent
+function! guten_tag#container#CanHaveParent(tag)
+  if a:tag.fields.language ==# ''
+    return 0
+  endif
+  if !has_key(s:can_have_parent_mapping, a:tag.fields.language)
+    return 0
+  endif
+  return s:can_have_parent_mapping[a:tag.fields.language](a:tag)
+endfunction
+
 " Return true if the first tag can contain the second one.
-function! guten_tag#container#CanContain(container, tag)
+function! guten_tag#container#Contains(container, tag)
+  if a:container is# a:tag
+    return 0
+  endif
   if a:container.fields.language !=# a:tag.fields.language
     return 0
   endif
   let l:lang = a:container.fields.language
-  if !has_key(s:container_mapping, l:lang)
+  if !has_key(s:contains_mapping, l:lang)
     return 0
   endif
-  return s:container_mapping[l:lang](a:container, a:tag)
-endfunction
-
-" Return a possible parent container for a tag, or null if there's none.
-function! guten_tag#container#FindParent(tags, tag)
-  for l:container in a:tags
-    if guten_tag#container#CanContain(l:container, a:tag)
-      return l:container
-    endif
-  endfor
-  return v:null
+  return s:contains_mapping[l:lang](a:container, a:tag)
 endfunction
 
 " --- ASM --- "
 
-function! s:CanContainAsm(container, tag)
+function! s:ContainsAsm(container, tag)
   return 0
 endfunction
 
 " --- C --- "
 
-function! s:CanContainC(container, tag)
+function! s:CanHaveParentC(tag)
+  let l:kind = guten_tag#tag#TagKind(a:tag)
+  if l:kind =~# '\vd|f|g|h|l|p|s|t|u|v|x|z|L'
+    return 0
+  endif
+  if l:kind ==# 'e'
+    return has_key(a:tag.fields, 'enum')
+  elseif l:kind ==# 'm'
+    return guten_tag#util#HasAny(a:tag.fields, ['struct', 'union'])
+  else
+    return 0
+  endif
+endfunction
+
+function! s:ContainsC(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
   let l:tagkind = guten_tag#tag#TagKind(a:tag)
   if l:contkind =~# '\vd|e|f|h|l|m|p|t|v|x|z|L'
@@ -52,8 +70,18 @@ function! s:CanContainC(container, tag)
 endfunction
 
 " --- C++ --- "
+function! s:CanHaveParentCPP(tag)
+  let l:kind = guten_tag#tag#TagKind(a:tag)
+  if l:kind ==# 'e'
+    return has_key(a:tag.fields, 'enum')
+  elseif l:kind =~# '\vf|g|m|p|s|u|c'
+    return guten_tag#util#HasAny(a:tag.fields, ['struct', 'class'])
+  else
+    return 0
+  endif
+endfunction
 
-function! s:CanContainCPP(container, tag)
+function! s:ContainsCPP(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
   let l:tagkind = guten_tag#tag#TagKind(a:tag)
   if l:contkind =~# '\vd|e|f|h|l|m|p|t|v|x|z|L|N|U'
@@ -72,7 +100,18 @@ endfunction
 
 " --- D --- "
 
-function! s:CanContainD(container, tag)
+function! s:CanHaveParentD(tag)
+  let l:kind = guten_tag#tag#TagKind(a:tag)
+  if l:kind ==# 'e'
+    return has_key(a:tag.fields, 'enum')
+  elseif l:kind =~# '\va|c|g|f|i|m|X|n|p|s|T|u'
+    return guten_tag#util#HasAny(a:tag.fields, ['struct', 'class', 'template', 'mixin'])
+  else
+    return 0
+  endif
+endfunction
+
+function! s:ContainsD(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
   let l:tagkind = guten_tag#tag#TagKind(a:tag)
   if l:contkind =~# '\va|e|l|M|n|p|v|V'
@@ -101,7 +140,11 @@ endfunction
 
 " --- Java --- "
 
-function! s:CanContainJava(container, tag)
+function! s:CanHaveParentJava(tag)
+  return guten_tag#util#HasAny(a:tag.fields, ['class', 'enum', 'interface'])
+endfunction
+
+function! s:ContainsJava(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
   let l:tagkind = guten_tag#tag#TagKind(a:tag) 
   if l:contkind =~# '\va|f|l|m|p'
@@ -120,7 +163,7 @@ endfunction
 
 " --- Lisp --- "
 
-function! s:CanContainLisp(container, tag)
+function! s:ContainsLisp(container, tag)
   " This is kind of ridiculous, but 'f' is actually the *only* tag kind for
   " Lisp. I hope the guys from Universal Tags will add more sometime.
   return 0
@@ -128,20 +171,23 @@ endfunction
 
 " --- Lua --- "
 
-function! s:CanContainLua(container, tag)
+function! s:ContainsLua(container, tag)
   " Yeah, same here - no tags for anything.
   return 0
 endfunction
 
 " --- Perl --- "
 
-function! s:CanContainPerl(container, tag)
+function! s:ContainsPerl(container, tag)
   return 0
 endfunction
 
 " --- Python --- "
+function! s:CanHaveParentPython(tag)
+  return has_key(a:tag.fields, 'class')
+endfunction
 
-function! s:CanContainPython(container, tag)
+function! s:ContainsPython(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
   let l:tagkind = guten_tag#tag#TagKind(a:tag)
   if l:contkind =~# '\vn|v|I|i|x|z|l|f'
@@ -152,21 +198,53 @@ endfunction
 
 " --- R --- "
 
-function! s:CanContainR(container, tag)
+function! s:ContainsR(container, tag)
   return 0
+endfunction
+
+" --- Ruby --- "
+
+function! s:CanHaveParentRuby(tag)
+  return guten_tag#util#HasAny(a:tag.fields, ['class', 'module'])
+endfunction
+ 
+function! s:ContainsRuby(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag)
+  if l:contkind ==# 'c'
+    let l:class = get(a:tag.fields, 'class', '')
+    let l:parentname = guten_tag#util#QualifiedName(a:container, '.')
+    return l:class ==# l:parentname
+  elseif l:contkind ==# 'm'
+    let l:module = get(a:tag.fields, 'module', '')
+    let l:parentname = guten_tag#util#QualifiedName(a:container, '.')
+    return l:module ==# l:parentname
+  else
+    return 0
+  endif
 endfunction
 
 " --- Tying this all together --- "
 
-let s:container_mapping = {
-      \ 'Asm': function('s:CanContainAsm'),
-      \ 'C': function('s:CanContainC'),
-      \ 'C++': function('s:CanContainCPP'),
-      \ 'D': function('s:CanContainD'),
-      \ 'Java': function('s:CanContainJava'),
-      \ 'Lisp': function('s:CanContainLisp'),
-      \ 'Lua': function('s:CanContainLua'),
-      \ 'Perl': function('s:CanContainPerl'),
-      \ 'Python': function('s:CanContainPython'),
-      \ 'R': function('s:CanContainR'),
+let s:can_have_parent_mapping = {
+      \ 'C': function('s:CanHaveParentC'),
+      \ 'C++': function('s:CanHaveParentCPP'),
+      \ 'D': function('s:CanHaveParentD'),
+      \ 'Java': function('s:CanHaveParentJava'),
+      \ 'Python': function('s:CanHaveParentPython'),
+      \ 'Ruby': function('s:CanHaveParentRuby'),
+      \ }
+
+let s:contains_mapping = {
+      \ 'Asm': function('s:ContainsAsm'),
+      \ 'C': function('s:ContainsC'),
+      \ 'C++': function('s:ContainsCPP'),
+      \ 'D': function('s:ContainsD'),
+      \ 'Java': function('s:ContainsJava'),
+      \ 'Lisp': function('s:ContainsLisp'),
+      \ 'Lua': function('s:ContainsLua'),
+      \ 'Perl': function('s:ContainsPerl'),
+      \ 'Python': function('s:ContainsPython'),
+      \ 'R': function('s:ContainsR'),
+      \ 'Ruby': function('s:ContainsRuby'),
       \ }

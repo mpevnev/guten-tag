@@ -82,12 +82,16 @@ function! guten_tag#buffer#FileRepr(buffer, file)
         if len(l:cur_trav.parent.children) !=# 0
           call add(l:res.folds, [l:cur_trav.foldstart, l:line - 1])
         endif
+        if len(l:traversals) ># 0
+          let l:traversals[-1].child_index += 1
+        endif
         continue
       endif
       let l:cur = l:cur_trav.parent.children[l:cur_trav.child_index]
       call s:AddHighlight(l:res.highlights, l:cur, l:line, l:indent)
       let l:line += s:AddLine(a:buffer, l:res.text, l:cur, l:indent, 0)
       if len(l:cur.children) ># 0
+        let l:indent += g:guten_tag_indent
         call add(l:traversals, s:MakeTraversal(l:cur, l:line + 1))
         continue
       endif
