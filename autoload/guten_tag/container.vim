@@ -26,7 +26,13 @@ function! guten_tag#container#FindParent(tags, tag)
   return v:null
 endfunction
 
-" --- C container logic --- "
+" --- ASM --- "
+
+function! s:CanContainAsm(container, tag)
+  return 0
+endfunction
+
+" --- C --- "
 
 function! s:CanContainC(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
@@ -45,7 +51,7 @@ function! s:CanContainC(container, tag)
   endif
 endfunction
 
-" --- C++ container logic --- "
+" --- C++ --- "
 
 function! s:CanContainCPP(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
@@ -64,7 +70,7 @@ function! s:CanContainCPP(container, tag)
   endif
 endfunction
 
-" --- Python container logic --- "
+" --- Python --- "
 
 function! s:CanContainPython(container, tag)
   let l:contkind = guten_tag#tag#TagKind(a:container)
@@ -78,6 +84,7 @@ endfunction
 " --- Tying this all together --- "
 
 let s:container_mapping = {
+      \ 'Asm': function('s:CanContainAsm'),
       \ 'C': function('s:CanContainC'),
       \ 'C++': function('s:CanContainCPP'),
       \ 'Python': function('s:CanContainPython'),
