@@ -70,6 +70,35 @@ function! s:CanContainCPP(container, tag)
   endif
 endfunction
 
+" --- D --- "
+
+function! s:CanContainD(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag)
+  if l:contkind =~# '\va|e|l|M|n|p|v|V'
+    return 0
+  endif
+  if l:contkind ==# 'c'
+    return get(a:tag.fields, 'class', '') ==# a:container.name
+  elseif l:contkind ==# 'g'
+    return get(a:tag.fields, 'enum', '') ==# a:container.name
+  elseif l:contkind ==# 'f'
+    return get(a:tag.fields, 'function', '') ==# a:container.name
+  elseif l:contkind ==# 'i'
+    return get(a:tag.fields, 'interface', '') ==# a:container.name
+  elseif l:contkind ==# 'X'
+    return get(a:tag.fields, 'mixin', '') ==# a:container.name
+  elseif l:contkind ==# 's'
+    return get(a:tag.fields, 'struct', '') ==# a:container.name
+  elseif l:contkind ==# 'T'
+    return get(a:tag.fields, 'template', '') ==# a:container.name
+  elseif l:contkind ==# 'u'
+    return get(a:tag.fields, 'union', '') ==# a:container.name
+  else
+    return 0
+  endif
+endfunction
+
 " --- Python --- "
 
 function! s:CanContainPython(container, tag)
@@ -87,5 +116,6 @@ let s:container_mapping = {
       \ 'Asm': function('s:CanContainAsm'),
       \ 'C': function('s:CanContainC'),
       \ 'C++': function('s:CanContainCPP'),
+      \ 'D': function('s:CanContainD'),
       \ 'Python': function('s:CanContainPython'),
       \ }
