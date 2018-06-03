@@ -75,7 +75,7 @@ function! s:CanHaveParentCPP(tag)
   if l:kind ==# 'e'
     return has_key(a:tag.fields, 'enum')
   elseif l:kind =~# '\vf|g|m|p|s|u|c'
-    return guten_tag#util#HasAny(a:tag.fields, ['struct', 'class'])
+    return guten_tag#util#HasAny(a:tag.fields, ['struct', 'class', 'namespace'])
   else
     return 0
   endif
@@ -89,10 +89,18 @@ function! s:ContainsCPP(container, tag)
   endif
   if l:contkind ==# 'g' && l:tagkind ==# 'e'
     return get(a:tag.fields, 'enum', '') ==# a:container.name
-  elseif l:contkind ==# 'c' && l:tagkind ==# 'm'
-    return get(a:tag.fields, 'class', '') ==# a:container.name
-  elseif l:contkind ==# 's' && l:tagkind ==# 'm'
-    return get(a:tag.fields, 'struct', '') ==# a:container.name
+  elseif l:contkind ==# 'c'
+    let l:parentname = get(a:tag.fields, 'class', '')
+    let l:contname = guten_tag#util#QualifiedName(a:container, '::')
+    return l:parentname ==# l:contname
+  elseif l:contkind ==# 's'
+    let l:parentname = get(a:tag.fields, 'struct', '')
+    let l:contname = guten_tag#util#QualifiedName(a:container, '::')
+    return l:parentname ==# l:contname
+  elseif l:contkind ==# 'n'
+    let l:parentname = get(a:tag.fields, 'namespace', '')
+    let l:contname = guten_tag#util#QualifiedName(a:container, '::')
+    return l:contname ==# l:parentname
   else
     return 0
   endif
