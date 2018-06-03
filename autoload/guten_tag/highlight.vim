@@ -154,6 +154,15 @@ let s:java_highlight = {
       \ 'm': g:guten_tag_hi_java_method,
       \ }
 
+" --- Lisp --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_lisp_function',
+      \ ['Identifier', 'Function'])
+
+let s:lisp_highlight = {
+      \ 'f': g:guten_tag_hi_lisp_function,
+      \ }
+
 " --- Python --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_py_class',
@@ -179,6 +188,7 @@ let s:highlight_groups = {
       \ 'C++': s:cpp_highlight,
       \ 'D': s:d_highlight,
       \ 'Java': s:java_highlight,
+      \ 'Lisp': s:lisp_highlight,
       \ 'Python': s:python_highlight,
       \ }
 

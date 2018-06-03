@@ -118,6 +118,14 @@ function! s:CanContainJava(container, tag)
   endif
 endfunction
 
+" --- Lisp --- "
+
+function! s:CanContainLisp(container, tag)
+  " This is kind of ridiculous, but 'f' is actually the *only* tag kind for
+  " Lisp. I hope the guys from Universal Tags will add more sometime.
+  return 0
+endfunction
+
 " --- Python --- "
 
 function! s:CanContainPython(container, tag)
@@ -137,5 +145,6 @@ let s:container_mapping = {
       \ 'C++': function('s:CanContainCPP'),
       \ 'D': function('s:CanContainD'),
       \ 'Java': function('s:CanContainJava'),
+      \ 'Lisp': function('s:CanContainLisp'),
       \ 'Python': function('s:CanContainPython'),
       \ }
