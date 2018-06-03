@@ -263,6 +263,37 @@ function! s:ContainsRuby(container, tag)
   endif
 endfunction
 
+" --- Rust --- "
+
+function! s:CanHaveParentRust(tag)
+  return guten_tag#util#HasAny(a:tag.fields, ['enum', 'implementation', 'struct',
+        \ 'module', 'function', 'interface'])
+endfunction
+
+function! s:ContainsRust(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:tagkind = guten_tag#tag#TagKind(a:tag)
+  if l:contkind =~# '\vc|t|v|M|m|e|P'
+    return 0
+  endif
+  let l:contname = guten_tag#util#QualifiedName(a:container, '::')
+  if l:contkind ==# 'n'
+    return get(a:tag.fields, 'module', '') ==# l:contname
+  elseif l:contkind ==# 's'
+    return get(a:tag.fields, 'struct', '') ==# l:contname
+  elseif l:contkind ==# 'i'
+    return get(a:tag.fields, 'interface', '') ==# l:contname
+  elseif l:contkind ==# 'f'
+    return get(a:tag.fields, 'function', '') ==# l:contname
+  elseif l:contkind ==# 'c'
+    return get(a:tag.fields, 'implementation', '') ==# l:contname
+  elseif l:contkind ==# 'g' && l:tagkind ==# 'e'
+    return get(a:tag.fields, 'enum', '') ==# l:contname
+  else
+    return 0
+  endif
+endfunction
+
 " --- Tying this all together --- "
 
 let s:can_have_parent_mapping = {
@@ -274,6 +305,7 @@ let s:can_have_parent_mapping = {
       \ 'JavaScript': function('s:CanHaveParentJavaScript'),
       \ 'Python': function('s:CanHaveParentPython'),
       \ 'Ruby': function('s:CanHaveParentRuby'),
+      \ 'Rust': function('s:CanHaveParentRust'),
       \ }
 
 let s:contains_mapping = {
@@ -290,4 +322,5 @@ let s:contains_mapping = {
       \ 'Python': function('s:ContainsPython'),
       \ 'R': function('s:ContainsR'),
       \ 'Ruby': function('s:ContainsRuby'),
+      \ 'Rust': function('s:ContainsRust'),
       \ }

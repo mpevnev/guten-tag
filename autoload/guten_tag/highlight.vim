@@ -296,6 +296,48 @@ let s:ruby_highlight = {
       \ 'S': g:guten_tag_hi_ruby_singleton,
       \ }
 
+" --- Rust --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_rust_module',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_struct',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_trait',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_implementation',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_enum',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_type',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_global',
+      \ ['Identifier', 'Label'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_macro',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_member',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_enum_member',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_rust_method',
+      \ ['Identifier', 'Function'])
+
+let s:rust_highlight = {
+      \ 'n': g:guten_tag_hi_rust_module,
+      \ 's': g:guten_tag_hi_rust_struct,
+      \ 'i': g:guten_tag_hi_rust_trait,
+      \ 'c': g:guten_tag_hi_rust_implementation,
+      \ 'f': g:guten_tag_hi_rust_function,
+      \ 'g': g:guten_tag_hi_rust_enum,
+      \ 't': g:guten_tag_hi_rust_type,
+      \ 'v': g:guten_tag_hi_rust_global,
+      \ 'M': g:guten_tag_hi_rust_macro,
+      \ 'm': g:guten_tag_hi_rust_member,
+      \ 'e': g:guten_tag_hi_rust_enum_member,
+      \ 'P': g:guten_tag_hi_rust_method,
+      \ }
+
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
@@ -311,6 +353,7 @@ let s:highlight_groups = {
       \ 'Python': s:python_highlight,
       \ 'R': s:r_highlight,
       \ 'Ruby': s:ruby_highlight,
+      \ 'Rust': s:rust_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind
