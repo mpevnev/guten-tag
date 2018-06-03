@@ -5,9 +5,10 @@
 " --- Main things --- "
 
 " Either create a new tag window, or open an existing one.
-function! guten_tag#OpenTagWindow()
+function! guten_tag#OpenTagWindow() abort
   let l:files = tagfiles()
   if len(l:files) == 0
+    echomsg 'Guten Tag: no tags file found'
     return
   endif
   let l:file = l:files[0]
