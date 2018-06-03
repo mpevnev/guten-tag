@@ -39,6 +39,8 @@ function! s:GuessLanguage(tag)
     let a:tag.fields.language = 'PHP'
   elseif l:file =~# '\v\.py$'
     let a:tag.fields.language = 'Python'
+  elseif l:file =~# '\v\.(r|R)$'
+    let a:tag.fields.language = 'R'
   elseif l:file =~# '\v\.rb$'
     let a:tag.fields.language = 'Ruby'
   elseif l:file =~# '\v\.scm$'

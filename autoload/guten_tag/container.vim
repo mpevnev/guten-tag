@@ -150,6 +150,12 @@ function! s:CanContainPython(container, tag)
   return get(a:tag.fields, 'class', '') ==# a:container.name
 endfunction
 
+" --- R --- "
+
+function! s:CanContainR(container, tag)
+  return 0
+endfunction
+
 " --- Tying this all together --- "
 
 let s:container_mapping = {
@@ -162,4 +168,5 @@ let s:container_mapping = {
       \ 'Lua': function('s:CanContainLua'),
       \ 'Perl': function('s:CanContainPerl'),
       \ 'Python': function('s:CanContainPython'),
+      \ 'R': function('s:CanContainR'),
       \ }

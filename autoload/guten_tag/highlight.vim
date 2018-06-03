@@ -211,6 +211,18 @@ let s:python_highlight = {
       \ 'v': g:guten_tag_hi_py_variable,
       \ }
 
+" --- R --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_r_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_r_global',
+      \ ['Identifier', 'Label'])
+
+let s:r_highlight = {
+      \ 'f': g:guten_tag_hi_r_function,
+      \ 'g': g:guten_tag_hi_r_global,
+      \ }
+
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
@@ -222,6 +234,7 @@ let s:highlight_groups = {
       \ 'Lua': s:lua_highlight,
       \ 'Perl': s:perl_highlight,
       \ 'Python': s:python_highlight,
+      \ 'R': s:r_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind
