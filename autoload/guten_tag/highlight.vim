@@ -79,6 +79,54 @@ let s:cpp_highlight = {
       \ 'v': g:guten_tag_hi_cpp_variable,
       \ }
 
+" --- D --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_d_alias',
+      \ ['Identifier', 'Typedef'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_class',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_enum',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_enum_member',
+      \ ['Identifier', 'Constant'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_external_var',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_interface',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_member',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_mixin',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_module',
+      \ ['Identifier', 'Constant'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_struct',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_template',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_union',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_d_variable',
+      \ ['Identifier', 'Identifier'])
+
+let s:d_highlight = {
+      \ 'a': g:guten_tag_hi_d_alias,
+      \ 'c': g:guten_tag_hi_d_class,
+      \ 'g': g:guten_tag_hi_d_enum,
+      \ 'e': g:guten_tag_hi_d_enum_member,
+      \ 'x': g:guten_tag_hi_d_external_var,
+      \ 'f': g:guten_tag_hi_d_function,
+      \ 'i': g:guten_tag_hi_d_interface,
+      \ 'm': g:guten_tag_hi_d_member,
+      \ 'X': g:guten_tag_hi_d_mixin,
+      \ 'M': g:guten_tag_hi_d_module,
+      \ 's': g:guten_tag_hi_d_struct,
+      \ 'T': g:guten_tag_hi_d_template,
+      \ 'u': g:guten_tag_hi_d_union,
+      \ 'v': g:guten_tag_hi_d_variable,
+      \ }
+
 " --- Python --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_py_class',
@@ -102,6 +150,7 @@ let s:python_highlight = {
 let s:highlight_groups = {
       \ 'C': s:c_highlight,
       \ 'C++': s:cpp_highlight,
+      \ 'D': s:d_highlight,
       \ 'Python': s:python_highlight,
       \ }
 
