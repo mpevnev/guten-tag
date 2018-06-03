@@ -146,6 +146,29 @@ function! s:ContainsD(container, tag)
   endif
 endfunction
 
+" --- Go --- "
+
+function! s:CanHaveParentGo(tag)
+  return guten_tag#util#HasAny(a:tag.fields, ['struct', 'package', 'interface',
+        \ 'type', 'unknown'])
+endfunction
+
+function! s:ContainsGo(container, tag)
+  let l:contkind = guten_tag#tag#TagKind(a:container)
+  let l:contname = guten_tag#util#QualifiedName(a:container, '.')
+  if l:contkind ==# 'p'
+    return get(a:tag.fields, 'package', '') ==# l:contname
+  elseif l:contkind ==# 't'
+    return get(a:tag.fields, 'type', '') ==# l:contname
+  elseif l:contkind ==# 's'
+    return get(a:tag.fields, 'struct', '') ==# l:contname
+  elseif l:contkind ==# 'i'
+    return get(a:tag.fields, 'interface', '') ==# l:contname
+  else
+    return get(a:tag.fields, 'unknown', '') ==# l:contname
+  endif
+endfunction
+
 " --- Java --- "
 
 function! s:CanHaveParentJava(tag)
@@ -238,6 +261,7 @@ let s:can_have_parent_mapping = {
       \ 'C': function('s:CanHaveParentC'),
       \ 'C++': function('s:CanHaveParentCPP'),
       \ 'D': function('s:CanHaveParentD'),
+      \ 'Go': function('s:CanHaveParentGo'),
       \ 'Java': function('s:CanHaveParentJava'),
       \ 'Python': function('s:CanHaveParentPython'),
       \ 'Ruby': function('s:CanHaveParentRuby'),
@@ -248,6 +272,7 @@ let s:contains_mapping = {
       \ 'C': function('s:ContainsC'),
       \ 'C++': function('s:ContainsCPP'),
       \ 'D': function('s:ContainsD'),
+      \ 'Go': function('s:ContainsGo'),
       \ 'Java': function('s:ContainsJava'),
       \ 'Lisp': function('s:ContainsLisp'),
       \ 'Lua': function('s:ContainsLua'),

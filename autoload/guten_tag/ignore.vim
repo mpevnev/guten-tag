@@ -32,6 +32,11 @@ function! s:IgnoreD(tag)
   return l:kind =~# '\vl|V'
 endfunction
 
+function! s:IgnoreGo(tag)
+  let l:kind = guten_tag#tag#TagKind(a:tag)
+  return l:kind ==# 'u'
+endfunction
+
 function! s:IgnoreJava(tag)
   let l:kind = guten_tag#tag#TagKind(a:tag)
   return l:kind =~# '\vl|p'
@@ -58,6 +63,7 @@ let s:ignore_mapping = {
       \ 'C': function('s:IgnoreC'),
       \ 'C++': function('s:IgnoreCPP'),
       \ 'D': function('s:IgnoreD'),
+      \ 'Go': function('s:IgnoreGo'),
       \ 'Java': function('s:IgnoreJava'),
       \ 'Perl': function('s:IgnorePerl'),
       \ 'Python': function('s:IgnorePython'),

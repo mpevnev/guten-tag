@@ -127,6 +127,37 @@ let s:d_highlight = {
       \ 'v': g:guten_tag_hi_d_variable,
       \ }
 
+" --- Go --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_go_package',
+      \ ['Identifier', 'Identfier'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_constant',
+      \ ['Identifier', 'Constant'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_type', 
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_variable',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_struct',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_interface',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_go_member',
+      \ ['Identifier', 'Identifier'])
+
+let s:go_highlight = {
+      \ 'p': g:guten_tag_hi_go_package,
+      \ 'f': g:guten_tag_hi_go_function,
+      \ 'c': g:guten_tag_hi_go_constant,
+      \ 't': g:guten_tag_hi_go_type,
+      \ 'v': g:guten_tag_hi_go_variable,
+      \ 's': g:guten_tag_hi_go_struct,
+      \ 'i': g:guten_tag_hi_go_interface,
+      \ 'm': g:guten_tag_hi_go_member,
+      \ 'M': g:guten_tag_hi_go_member,
+      \ }
+
 " --- Java --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_java_annotation',
@@ -244,6 +275,7 @@ let s:highlight_groups = {
       \ 'C': s:c_highlight,
       \ 'C++': s:cpp_highlight,
       \ 'D': s:d_highlight,
+      \ 'Go': s:go_highlight,
       \ 'Java': s:java_highlight,
       \ 'Lisp': s:lisp_highlight,
       \ 'Lua': s:lua_highlight,

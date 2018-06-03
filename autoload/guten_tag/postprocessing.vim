@@ -25,6 +25,8 @@ function! s:GuessLanguage(tag)
     let a:tag.fields.language = 'C++'
   elseif l:file =~# '\v\.d$'
     let a:tag.fields.language = 'D'
+  elseif l:file =~# '\v\.go$'
+    let a:tag.fields.language = 'Go'
   elseif l:file =~# '\v\.java$'
     let a:tag.fields.language = 'Java'
   elseif l:file =~# '\v\.js$'
