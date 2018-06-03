@@ -223,6 +223,21 @@ let s:r_highlight = {
       \ 'g': g:guten_tag_hi_r_global,
       \ }
 
+" --- Ruby --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_ruby_class',
+      \ ['Identifier', 'Structure'])
+call guten_tag#option#DefOpt('guten_tag_hi_ruby_method',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_ruby_singleton',
+      \ ['Identifier', 'Function'])
+
+let s:ruby_highlight = {
+      \ 'c': g:guten_tag_hi_ruby_class,
+      \ 'm': g:guten_tag_hi_ruby_method,
+      \ 'S': g:guten_tag_hi_ruby_singleton,
+      \ }
+
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
@@ -235,6 +250,7 @@ let s:highlight_groups = {
       \ 'Perl': s:perl_highlight,
       \ 'Python': s:python_highlight,
       \ 'R': s:r_highlight,
+      \ 'Ruby': s:ruby_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind
