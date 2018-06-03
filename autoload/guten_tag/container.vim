@@ -87,20 +87,15 @@ function! s:ContainsCPP(container, tag)
   if l:contkind =~# '\vd|e|f|h|l|m|p|t|v|x|z|L|N|U'
     return 0
   endif
+  let l:contname = guten_tag#util#QualifiedName(a:container, '::')
   if l:contkind ==# 'g' && l:tagkind ==# 'e'
-    return get(a:tag.fields, 'enum', '') ==# a:container.name
+    return get(a:tag.fields, 'enum', '') ==# l:contname
   elseif l:contkind ==# 'c'
-    let l:parentname = get(a:tag.fields, 'class', '')
-    let l:contname = guten_tag#util#QualifiedName(a:container, '::')
-    return l:parentname ==# l:contname
+    return get(a:tag.fields, 'class', '') ==# l:contname
   elseif l:contkind ==# 's'
-    let l:parentname = get(a:tag.fields, 'struct', '')
-    let l:contname = guten_tag#util#QualifiedName(a:container, '::')
-    return l:parentname ==# l:contname
+    return get(a:tag.fields, 'struct', '') ==# l:contname
   elseif l:contkind ==# 'n'
-    let l:parentname = get(a:tag.fields, 'namespace', '')
-    let l:contname = guten_tag#util#QualifiedName(a:container, '::')
-    return l:contname ==# l:parentname
+    return get(a:tag.fields, 'namespace', '') ==# l:contname
   else
     return 0
   endif
