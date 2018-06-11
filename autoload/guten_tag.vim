@@ -8,7 +8,7 @@
 function! guten_tag#OpenTagWindow() abort
   let l:files = tagfiles()
   if len(l:files) == 0
-    echomsg 'Guten Tag: no tags file found'
+    echoerr 'Guten Tag: no tags file found'
     return
   endif
   let l:file = l:files[0]
