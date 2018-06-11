@@ -336,4 +336,5 @@ let s:contains_mapping = {
       \ 'Ruby': function('s:ContainsRuby'),
       \ 'Rust': function('s:ContainsRust'),
       \ 'Scheme': function('s:ContainsScheme'),
+      \ 'Sh': function('s:ContainsSh'),
       \ }
