@@ -306,6 +306,12 @@ function! s:ContainsSh(container, tag)
   return 0
 endfunction
 
+" --- Vim --- "
+
+function! s:ContainsVim(container, tag)
+  return 0
+endfunction
+
 " --- Tying this all together --- "
 
 let s:can_have_parent_mapping = {
@@ -337,4 +343,5 @@ let s:contains_mapping = {
       \ 'Rust': function('s:ContainsRust'),
       \ 'Scheme': function('s:ContainsScheme'),
       \ 'Sh': function('s:ContainsSh'),
+      \ 'Vim': function('s:ContainsVim'),
       \ }

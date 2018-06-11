@@ -368,6 +368,25 @@ let s:sh_highlight = {
       \ 'h': g:guten_tag_hi_sh_here_doc,
       \ }
 
+" --- Vim highlight --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_vim_autocommand',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_vim_command',
+      \ ['Identifier', 'Statement'])
+call guten_tag#option#DefOpt('guten_tag_hi_vim_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_vim_mapping',
+      \ ['Identifier', 'Constant'])
+
+let s:vim_highlight = {
+      \ 'a': g:guten_tag_hi_vim_autocommand,
+      \ 'c': g:guten_tag_hi_vim_command,
+      \ 'f': g:guten_tag_hi_vim_function,
+      \ 'm': g:guten_tag_hi_vim_mapping,
+      \ }
+
+
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
@@ -386,6 +405,7 @@ let s:highlight_groups = {
       \ 'Rust': s:rust_highlight,
       \ 'Scheme': s:scheme_highlight,
       \ 'Sh': s:sh_highlight,
+      \ 'Vim': s:vim_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind
