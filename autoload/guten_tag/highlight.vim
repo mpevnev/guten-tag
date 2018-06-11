@@ -416,13 +416,13 @@ function! guten_tag#highlight#SetHighlighting(tag)
   endif
   if !has_key(s:highlight_groups, a:tag.fields.language)
     let a:tag.kind_highlight = 'Identifier'
-    let a:tag.name_highlight = 'Identifier'
+    let a:tag.name_highlight = 'Normal'
     return
   endif
   let l:higroup = s:highlight_groups[a:tag.fields.language]
   if !has_key(l:higroup, l:kind)
     let a:tag.kind_highlight = 'Identifier'
-    let a:tag.name_highlight = 'Identifier'
+    let a:tag.name_highlight = 'Normal'
     return
   endif
   let [a:tag.kind_highlight, a:tag.name_highlight] = l:higroup[l:kind]
