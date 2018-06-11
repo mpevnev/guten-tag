@@ -294,6 +294,12 @@ function! s:ContainsRust(container, tag)
   endif
 endfunction
 
+" --- Scheme --- "
+
+function! s:ContainsScheme(container, tag)
+  return 0
+endfunction
+
 " --- Sh --- "
 
 function! s:ContainsSh(container, tag)
@@ -329,4 +335,5 @@ let s:contains_mapping = {
       \ 'R': function('s:ContainsR'),
       \ 'Ruby': function('s:ContainsRuby'),
       \ 'Rust': function('s:ContainsRust'),
+      \ 'Scheme': function('s:ContainsScheme'),
       \ }
