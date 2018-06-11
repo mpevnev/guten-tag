@@ -61,6 +61,11 @@ function! s:IgnoreR(tag)
   return l:kind =~# '\vl|s|v'
 endfunction
 
+function! s:IgnoreVim(tag)
+  let l:kind = guten_tag#tag#TagKind(a:tag)
+  return l:kind =~# '\vv|n'
+endfunction
+
 " --- Helpers --- "
 
 let s:ignore_mapping = {
@@ -73,4 +78,5 @@ let s:ignore_mapping = {
       \ 'Perl': function('s:IgnorePerl'),
       \ 'Python': function('s:IgnorePython'),
       \ 'R': function('s:IgnoreR'),
+      \ 'Vim': function('s:IgnoreVim'),
       \ }

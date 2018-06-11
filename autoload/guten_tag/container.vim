@@ -294,6 +294,12 @@ function! s:ContainsRust(container, tag)
   endif
 endfunction
 
+" --- Sh --- "
+
+function! s:ContainsSh(container, tag)
+  return 0
+endfunction
+
 " --- Tying this all together --- "
 
 let s:can_have_parent_mapping = {
