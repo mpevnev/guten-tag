@@ -338,6 +338,18 @@ let s:rust_highlight = {
       \ 'P': g:guten_tag_hi_rust_method,
       \ }
 
+" --- Scheme highlight --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_scheme_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_scheme_set',
+      \ ['Identifier', 'Identifier'])
+
+let s:scheme_highlight = {
+      \ 'f': g:guten_tag_hi_scheme_function,
+      \ 's': g:guten_tag_hi_scheme_set,
+      \ }
+
 " --- Sh highlight --- "
 
 call guten_tag#option#DefOpt('guten_tag_hi_sh_alias',
@@ -372,6 +384,7 @@ let s:highlight_groups = {
       \ 'R': s:r_highlight,
       \ 'Ruby': s:ruby_highlight,
       \ 'Rust': s:rust_highlight,
+      \ 'Scheme': s:scheme_highlight,
       \ 'Sh': s:sh_highlight,
       \ }
 
