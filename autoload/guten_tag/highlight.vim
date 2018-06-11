@@ -338,6 +338,24 @@ let s:rust_highlight = {
       \ 'P': g:guten_tag_hi_rust_method,
       \ }
 
+" --- Sh highlight --- "
+
+call guten_tag#option#DefOpt('guten_tag_hi_sh_alias',
+      \ ['Identifier', 'Identifier'])
+call guten_tag#option#DefOpt('guten_tag_hi_sh_function',
+      \ ['Identifier', 'Function'])
+call guten_tag#option#DefOpt('guten_tag_hi_sh_script_file',
+      \ ['Identifier', 'Label'])
+call guten_tag#option#DefOpt('guten_tag_hi_sh_here_doc',
+      \ ['Identifier', 'Title'])
+
+let s:sh_highlight = {
+      \ 'a': g:guten_tag_hi_sh_alias,
+      \ 'f': g:guten_tag_hi_sh_function,
+      \ 's': g:guten_tag_hi_sh_script_file,
+      \ 'h': g:guten_tag_hi_sh_here_doc',
+      \ }
+
 " --- Tying this all together --- "
 
 let s:highlight_groups = {
@@ -354,6 +372,7 @@ let s:highlight_groups = {
       \ 'R': s:r_highlight,
       \ 'Ruby': s:ruby_highlight,
       \ 'Rust': s:rust_highlight,
+      \ 'Sh': s:sh_highlight,
       \ }
 
 " Set tag's highlighting settings based on its language and kind

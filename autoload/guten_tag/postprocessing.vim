@@ -49,6 +49,8 @@ function! s:GuessLanguage(tag)
     let a:tag.fields.language = 'Ruby'
   elseif l:file =~# '\v\.scm$'
     let a:tag.fields.language = 'Scheme'
+  elseif l:file =~# '\v\.(zsh|sh|bash)$'
+    let a:tag.fields.language = 'Sh'
   elseif l:file =~# '\v\.(vim|nvim)$'
     let a:tag.fields.language = 'Vim'
   else
