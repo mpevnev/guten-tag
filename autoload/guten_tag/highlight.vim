@@ -63,7 +63,7 @@ call guten_tag#option#DefOpt('guten_tag_hi_cpp_typedef',
 call guten_tag#option#DefOpt('guten_tag_hi_cpp_union',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_cpp_variable',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 
 let s:cpp_highlight = {
       \ 'c': g:guten_tag_hi_cpp_class,
@@ -90,13 +90,13 @@ call guten_tag#option#DefOpt('guten_tag_hi_d_enum',
 call guten_tag#option#DefOpt('guten_tag_hi_d_enum_member',
       \ ['Identifier', 'Constant'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_external_var',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_function',
       \ ['Identifier', 'Function'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_interface',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_member',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_mixin',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_module',
@@ -108,7 +108,7 @@ call guten_tag#option#DefOpt('guten_tag_hi_d_template',
 call guten_tag#option#DefOpt('guten_tag_hi_d_union',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_d_variable',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 
 let s:d_highlight = {
       \ 'a': g:guten_tag_hi_d_alias,
@@ -138,13 +138,13 @@ call guten_tag#option#DefOpt('guten_tag_hi_go_constant',
 call guten_tag#option#DefOpt('guten_tag_hi_go_type', 
       \ ['Identifier', 'Identifier'])
 call guten_tag#option#DefOpt('guten_tag_hi_go_variable',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_go_struct',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_go_interface',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_go_member',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 
 let s:go_highlight = {
       \ 'p': g:guten_tag_hi_go_package,
@@ -167,9 +167,9 @@ call guten_tag#option#DefOpt('guten_tag_hi_java_class',
 call guten_tag#option#DefOpt('guten_tag_hi_java_enum',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_java_enum_member',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_java_field',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_java_interface',
       \ ['Identifier', 'Structure'])
 call guten_tag#option#DefOpt('guten_tag_hi_java_method',
@@ -198,7 +198,7 @@ call guten_tag#option#DefOpt('guten_tag_hi_js_property',
 call guten_tag#option#DefOpt('guten_tag_hi_js_constant',
       \ ['Identifier', 'Constant'])
 call guten_tag#option#DefOpt('guten_tag_hi_js_global',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_js_generator',
       \ ['Identifier', 'Function'])
 
@@ -260,7 +260,7 @@ call guten_tag#option#DefOpt('guten_tag_hi_py_function',
 call guten_tag#option#DefOpt('guten_tag_hi_py_member',
       \ ['Identifier', 'Label'])
 call guten_tag#option#DefOpt('guten_tag_hi_py_variable',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 
 let s:python_highlight = {
       \ 'c': g:guten_tag_hi_py_class,
@@ -317,9 +317,9 @@ call guten_tag#option#DefOpt('guten_tag_hi_rust_global',
 call guten_tag#option#DefOpt('guten_tag_hi_rust_macro',
       \ ['Identifier', 'Function'])
 call guten_tag#option#DefOpt('guten_tag_hi_rust_member',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_rust_enum_member',
-      \ ['Identifier', 'Identifier'])
+      \ ['Identifier', 'Normal'])
 call guten_tag#option#DefOpt('guten_tag_hi_rust_method',
       \ ['Identifier', 'Function'])
 
