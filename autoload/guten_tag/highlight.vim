@@ -365,7 +365,7 @@ let s:sh_highlight = {
       \ 'a': g:guten_tag_hi_sh_alias,
       \ 'f': g:guten_tag_hi_sh_function,
       \ 's': g:guten_tag_hi_sh_script_file,
-      \ 'h': g:guten_tag_hi_sh_here_doc',
+      \ 'h': g:guten_tag_hi_sh_here_doc,
       \ }
 
 " --- Tying this all together --- "
